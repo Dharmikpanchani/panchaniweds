@@ -48,15 +48,16 @@
       // No roll: the values fade in, in the same date -> month -> year order.
       settleAll();
       announce();
-      window.setTimeout(finish, 90 + 2 * 260 + 420);
+      window.setTimeout(finish, 90 + 3 * 260 + 420);
       return;
     }
 
-    // All three start together and the later ones simply run longer, which
+    // All dials start together and the later ones simply run longer, which
     // is how a real set of dials behaves.
-    roll('days', dayCells(), 2, 1750);
-    roll('hours', hourCells(), 2, 2250);
-    roll('minutes', minuteCells(), 2, 2750);
+    roll('days', dayCells(), 2, 1600);
+    roll('hours', hourCells(), 2, 2100);
+    roll('minutes', minuteCells(), 2, 2600);
+    roll('seconds', secondCells(), 2, 3100);
 
     // The gold goes up the moment the last dial lands, and the plaques knock
     // just behind it - so they jump at the burst rather than having quietly
@@ -65,12 +66,12 @@
       confetti();
       flowerShower();
       knock();
-    }, 2750);
+    }, 3100);
 
     window.setTimeout(function () {
       finish();
       announce();
-    }, 2750 + 420);
+    }, 3100 + 420);
   }
 
   // ---- the confetti --------------------------------------------------------
@@ -517,10 +518,12 @@
       var daysStrip = section.querySelector('[data-dial="days"] [data-strip]');
       var hoursStrip = section.querySelector('[data-dial="hours"] [data-strip]');
       var minutesStrip = section.querySelector('[data-dial="minutes"] [data-strip]');
+      var secondsStrip = section.querySelector('[data-dial="seconds"] [data-strip]');
 
       if (daysStrip && daysStrip.children.length <= 1) daysStrip.innerHTML = cell(toGuj(pad(rem.days)));
       if (hoursStrip && hoursStrip.children.length <= 1) hoursStrip.innerHTML = cell(toGuj(pad(rem.hours)));
       if (minutesStrip && minutesStrip.children.length <= 1) minutesStrip.innerHTML = cell(toGuj(pad(rem.minutes)));
+      if (secondsStrip && secondsStrip.children.length <= 1) secondsStrip.innerHTML = cell(toGuj(pad(rem.seconds)));
     }, 1000);
   }
 
@@ -531,10 +534,10 @@
 
     // Settle strips onto single live values after rolling completes
     var rem = getRemaining();
-    ['days', 'hours', 'minutes'].forEach(function (name) {
+    ['days', 'hours', 'minutes', 'seconds'].forEach(function (name) {
       var strip = section.querySelector('[data-dial="' + name + '"] [data-strip]');
       if (!strip) return;
-      var val = (name === 'days') ? rem.days : (name === 'hours' ? rem.hours : rem.minutes);
+      var val = (name === 'days') ? rem.days : (name === 'hours' ? rem.hours : (name === 'minutes' ? rem.minutes : rem.seconds));
       strip.style.transition = 'none';
       strip.style.transform = 'translateY(0)';
       strip.innerHTML = cell(toGuj(pad(val)));
@@ -570,9 +573,9 @@
     strip.style.transform = 'translateY(calc(' + (-(seq.length - 1)) + ' * var(--cell-h)))';
   }
 
-  /** The hop the three plaques give as the gold goes up, left to right. */
+  /** The hop the four plaques give as the gold goes up, left to right. */
   function knock() {
-    ['days', 'hours', 'minutes'].forEach(function (name, i) {
+    ['days', 'hours', 'minutes', 'seconds'].forEach(function (name, i) {
       var plaque = section.querySelector('[data-dial="' + name + '"]');
       if (!plaque) return;
       window.setTimeout(function () {
@@ -584,7 +587,7 @@
 
   /** Every plaque straight onto its value, fading in one after another. */
   function settleAll() {
-    [['days', dayCells()], ['hours', hourCells()], ['minutes', minuteCells()]]
+    [['days', dayCells()], ['hours', hourCells()], ['minutes', minuteCells()], ['seconds', secondCells()]]
       .forEach(function (pair, i) {
         var plaque = section.querySelector('[data-dial="' + pair[0] + '"]');
         var strip = plaque && plaque.querySelector('[data-strip]');
@@ -604,7 +607,7 @@
     if (!said) return;
     var rem = getRemaining();
     said.textContent = 'શુભ લગ્ન મુહૂર્ત બાકી સમય: ' +
-      toGuj(rem.days) + ' દિવસ, ' + toGuj(rem.hours) + ' કલાક, ' + toGuj(rem.minutes) + ' મિનિટ. શુભ લગ્ન તિથિ: ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭';
+      toGuj(rem.days) + ' દિવસ, ' + toGuj(rem.hours) + ' કલાક, ' + toGuj(rem.minutes) + ' મિનિટ, ' + toGuj(rem.seconds) + ' સેકન્ડ. શુભ લગ્ન તિથિ: ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭';
   }
 
   var GUJ_DIGITS = { '0': '૦', '1': '૧', '2': '૨', '3': '૩', '4': '૪', '5': '૫', '6': '૬', '7': '૭', '8': '૮', '9': '૯' };
@@ -660,6 +663,13 @@
     var all = [];
     for (var m = 0; m < 60; m++) all.push(toGuj(pad(m)));
     return { all: all, index: rem.minutes % 60 };
+  }
+
+  function secondCells() {
+    var rem = getRemaining();
+    var all = [];
+    for (var s = 0; s < 60; s++) all.push(toGuj(pad(s)));
+    return { all: all, index: rem.seconds % 60 };
   }
 
   // ---- the date -------------------------------------------------------------
