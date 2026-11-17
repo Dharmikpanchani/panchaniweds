@@ -657,7 +657,7 @@
     const names = document.querySelector('.royale-outro__names');
     if (names) {
       const g = guestHtml();
-      names.innerHTML = g || 'સમસ્ત પંચાણી પરિવાર';
+      names.innerHTML = g || 'સમસ્ત પાંચાણી પરિવાર';
       names.hidden = false;
     }
     editable(document.querySelector('.royale-outro__line'), 'farewell.line', cfg.farewell.line || 'આપની પધરામણી એ જ અમારું પરમ સૌભાગ્ય અને સન્માન છે', { placeholder: 'આભાર સંદેશ' });

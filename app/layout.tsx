@@ -34,14 +34,14 @@ const tiroDevanagari = Tiro_Devanagari_Sanskrit({
 export const metadata: Metadata = {
   metadataBase: new URL("https://panchani-wedding.vercel.app"),
   title: {
-    default: "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક & કુ. નિશા | પંચાણી પરિવાર",
-    template: "%s | પંચાણી પરિવાર",
+    default: "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક & કુ. નિશા | પાંચાણી પરિવાર",
+    template: "%s | પાંચાણી પરિવાર",
   },
   description:
-    "॥ શ્રી ગણેશાય નમઃ ॥ અમારા આંગણે રૂડા અવસરના વધામણાં છે. ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭ ના શુભ પ્રસંગે અમારા સુપુત્ર ચિ. ધાર્મિક તથા કુ. નિશા ના શુભ વિવાહ નિમિત્તે આપશ્રીને સહપરિવાર પધારવા અમારું હાર્દિક નિમંત્રણ છે. • પંચાણી પરિવાર",
+    "॥ શ્રી ગણેશાય નમઃ ॥ અમારા આંગણે રૂડા અવસરના વધામણાં છે. ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭ ના શુભ પ્રસંગે અમારા સુપુત્ર ચિ. ધાર્મિક તથા કુ. નિશા ના શુભ વિવાહ નિમિત્તે આપશ્રીને સહપરિવાર પધારવા અમારું હાર્દિક નિમંત્રણ છે. • પાંચાણી પરિવાર",
   keywords: [
     "ધાર્મિક નિશા લગ્ન",
-    "પંચાણી પરિવાર",
+    "પાંચાણી પરિવાર",
     "Dharmik Nisha Wedding",
     "Panchani Wedding",
     "Panchani Parivar",
@@ -54,10 +54,10 @@ export const metadata: Metadata = {
     "Shahi Patra",
     "Shubh Vivaah Panchani",
   ],
-  authors: [{ name: "પંચાણી પરિવાર", url: "https://panchani-wedding.vercel.app" }],
-  creator: "પંચાણી પરિવાર",
-  publisher: "પંચાણી પરિવાર",
-  applicationName: "પંચાણી પરિવાર શુભ વિવાહ નિમંત્રણ",
+  authors: [{ name: "પાંચાણી પરિવાર", url: "https://panchani-wedding.vercel.app" }],
+  creator: "પાંચાણી પરિવાર",
+  publisher: "પાંચાણી પરિવાર",
+  applicationName: "પાંચાણી પરિવાર શુભ વિવાહ નિમંત્રણ",
   generator: "Next.js",
   referrer: "origin-when-cross-origin",
   formatDetection: {
@@ -81,11 +81,11 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક & કુ. નિશા | પંચાણી પરિવાર",
+    title: "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક & કુ. નિશા | પાંચાણી પરિવાર",
     description:
-      "॥ શ્રી ગણેશાય નમઃ ॥ ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭ ના શુભ અવસરે આપશ્રીને સહપરિવાર પધારવા અમારું હાર્દિક અને ભાવભર્યું નિમંત્રણ છે. • પંચાણી પરિવાર",
+      "॥ શ્રી ગણેશાય નમઃ ॥ ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭ ના શુભ અવસરે આપશ્રીને સહપરિવાર પધારવા અમારું હાર્દિક અને ભાવભર્યું નિમંત્રણ છે. • પાંચાણી પરિવાર",
     url: "https://panchani-wedding.vercel.app",
-    siteName: "પંચાણી પરિવાર શુભ વિવાહ નિમંત્રણ",
+    siteName: "પાંચાણી પરિવાર શુભ વિવાહ નિમંત્રણ",
     locale: "gu_IN",
     type: "website",
     images: [
@@ -93,15 +93,15 @@ export const metadata: Metadata = {
         url: "/media/mandap_dusk.webp",
         width: 1200,
         height: 630,
-        alt: "ધાર્મિક અને નિશા શુભ વિવાહ મંડપ - પંચાણી પરિવાર",
+        alt: "ધાર્મિક અને નિશા શુભ વિવાહ મંડપ - પાંચાણી પરિવાર",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક & કુ. નિશા | પંચાણી પરિવાર",
+    title: "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક & કુ. નિશા | પાંચાણી પરિવાર",
     description:
-      "શ્રી ગણેશાય નમઃ । અમારા આંગણે રૂડા અવસરના વધામણાં છે. ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭ - પંચાણી પરિવાર.",
+      "શ્રી ગણેશાય નમઃ । અમારા આંગણે રૂડા અવસરના વધામણાં છે. ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭ - પાંચાણી પરિવાર.",
     images: ["/media/mandap_dusk.webp"],
     creator: "@PanchaniWedding",
   },
@@ -121,7 +121,7 @@ export default function RootLayout({
         "@type": "WebSite",
         "@id": "https://panchani-wedding.vercel.app/#website",
         "url": "https://panchani-wedding.vercel.app",
-        "name": "પંચાણી પરિવાર શુભ વિવાહ",
+        "name": "પાંચાણી પરિવાર શુભ વિવાહ",
         "alternateName": [
           "Panchani Wedding",
           "Panchani Parivar",
@@ -129,11 +129,11 @@ export default function RootLayout({
           "ધાર્મિક નિશા લગ્ન",
           "Dharmik Nisha Wedding"
         ],
-        "description": "ચિ. ધાર્મિક અને કુ. નિશા ના શુભ વિવાહ નિમિત્તે પંચાણી પરિવાર તરફથી ભાવભર્યું નિમંત્રણ.",
+        "description": "ચિ. ધાર્મિક અને કુ. નિશા ના શુભ વિવાહ નિમિત્તે પાંચાણી પરિવાર તરફથી ભાવભર્યું નિમંત્રણ.",
         "inLanguage": "gu-IN",
         "publisher": {
           "@type": "Organization",
-          "name": "પંચાણી પરિવાર",
+          "name": "પાંચાણી પરિવાર",
           "url": "https://panchani-wedding.vercel.app"
         }
       },
@@ -142,7 +142,7 @@ export default function RootLayout({
         "@id": "https://panchani-wedding.vercel.app/#wedding-event",
         "name": "શુભ લગ્ન - ચિ. ધાર્મિક & કુ. નિશા",
         "alternateName": "Panchani Royale Wedding",
-        "description": "પંચાણી પરિવાર દ્વારા આયોજિત ચિ. ધાર્મિક અને કુ. નિશા નો શુભ વિવાહ મહોત્સવ.",
+        "description": "પાંચાણી પરિવાર દ્વારા આયોજિત ચિ. ધાર્મિક અને કુ. નિશા નો શુભ વિવાહ મહોત્સવ.",
         "startDate": "2027-01-28T10:00:00+05:30",
         "endDate": "2027-01-29T23:00:00+05:30",
         "eventStatus": "https://schema.org/EventScheduled",
@@ -161,13 +161,13 @@ export default function RootLayout({
         },
         "organizer": {
           "@type": "Organization",
-          "name": "પંચાણી પરિવાર",
+          "name": "પાંચાણી પરિવાર",
           "url": "https://panchani-wedding.vercel.app"
         },
         "performer": [
           {
             "@type": "Person",
-            "name": "ચિ. ધાર્મિક પંચાણી"
+            "name": "ચિ. ધાર્મિક પાંચાણી"
           },
           {
             "@type": "Person",

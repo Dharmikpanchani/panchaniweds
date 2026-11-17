@@ -47,7 +47,7 @@
           '<img src="icon-192.png" alt="Panchani Wedding App" class="pwa-banner__icon">' +
         '</div>' +
         '<div class="pwa-banner__info">' +
-          '<strong class="pwa-banner__title">પંચાણી રોયલ વેડિંગ એપ</strong>' +
+          '<strong class="pwa-banner__title">પાંચાણી રોયલ વેડિંગ એપ</strong>' +
           '<p class="pwa-banner__desc">મોબાઈલમાં એપ ઇન્સ્ટોલ કરી સરળતાથી જુઓ</p>' +
         '</div>' +
         '<button type="button" class="pwa-banner__btn" id="pwaInstallBtn">' +

@@ -82,7 +82,7 @@
       name: name,
       from_name: name,
       user_name: name,
-      to_name: 'ચિ. ધાર્મિક અને કુ. નિશા (પંચાણી પરિવાર)',
+      to_name: 'ચિ. ધાર્મિક અને કુ. નિશા (પાંચાણી પરિવાર)',
       to_email: RECIPIENT_EMAIL,
       recipient_email: RECIPIENT_EMAIL,
       email: RECIPIENT_EMAIL,
@@ -96,8 +96,8 @@
       message: message,
       user_message: message,
       subject: 'શુભ લગ્ન શુભેચ્છા અને આશીર્વાદ સંદેશ (ધાર્મિક & નિશા)',
-      title: 'પંચાણી પરિવાર શુભ વિવાહ - આશીર્વાદ સંદેશ',
-      address: 'પંચાણી પરિવાર રોયલ વેડિંગ (Panchani Royal Wedding)',
+      title: 'પાંચાણી પરિવાર શુભ વિવાહ - આશીર્વાદ સંદેશ',
+      address: 'પાંચાણી પરિવાર રોયલ વેડિંગ (Panchani Royal Wedding)',
       event: 'ચિ. ધાર્મિક અને કુ. નિશા શુભ વિવાહ પ્રસંગ'
     };
 
@@ -111,7 +111,7 @@
       }
       if (successMsg) {
         successMsg.textContent =
-          'ધન્યવાદ, ' + name + '! આપના સ્નેહભર્યા આશીર્વાદ ધાર્મિક અને નિશા તથા પંચાણી પરિવાર સુધી પહોંચી ગયા છે. આપનો ખૂબ ખૂબ આભાર!';
+          'ધન્યવાદ, ' + name + '! આપના સ્નેહભર્યા આશીર્વાદ ધાર્મિક અને નિશા તથા પાંચાણી પરિવાર સુધી પહોંચી ગયા છે. આપનો ખૂબ ખૂબ આભાર!';
       }
 
       // Save locally in localStorage as a backup

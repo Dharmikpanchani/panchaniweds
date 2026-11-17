@@ -1,10 +1,10 @@
 [
-  "gallery/photo1.webp",
-  "gallery/photo2.webp",
-  "gallery/photo3.webp",
-  "gallery/photo4.webp",
-  "gallery/photo5.webp",
-  "gallery/photo6.webp",
-  "gallery/photo7.webp",
-  "gallery/photo8.webp"
+  "/gallery/photo1.webp",
+  "/gallery/photo2.webp",
+  "/gallery/photo3.webp",
+  "/gallery/photo4.webp",
+  "/gallery/photo5.webp",
+  "/gallery/photo6.webp",
+  "/gallery/photo7.webp",
+  "/gallery/photo8.webp"
 ]
