@@ -23,13 +23,13 @@
   ];
 
   var when = resolveDate(section.getAttribute('data-date'));
-  var btn = document.getElementById('ryRevealBtn');
+  var dateCard = document.getElementById('ryDateCard');
   var after = document.getElementById('ryRevealAfter');
   var said = document.getElementById('ryRevealSaid');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var spent = false;
-  if (btn) btn.addEventListener('click', run);
+  if (dateCard) dateCard.addEventListener('click', function () { if (!spent) run(); });
 
   // ---- the reveal -----------------------------------------------------------
 
@@ -39,10 +39,9 @@
     spent = true;
 
     section.classList.add('is-revealing');
-    if (btn) {
-      btn.classList.add('is-pressed');
-      btn.disabled = true;
-      window.setTimeout(function () { btn.classList.remove('is-pressed'); }, 180);
+    if (dateCard) {
+      dateCard.classList.add('is-pressed');
+      window.setTimeout(function () { dateCard.classList.remove('is-pressed'); }, 180);
     }
 
     if (reduced) {
@@ -212,21 +211,25 @@
     shower.appendChild(petal);
   }
 
-  // ---- Scratch Card with Coin Cursor ---------------------------------------
+  // ---- Scratch Card with Auto-Scratch Coin & Interactive Canvas ------------
   var canvas = document.getElementById('ryScratchCanvas');
+  var scratchWrap = document.getElementById('ryScratchWrap');
   var isScratching = false;
   var scratchCleared = false;
-  var totalScratched = 0;
+  var autoScratchRunning = false;
+  var autoScratchRaf = null;
 
   function initScratchCard() {
-    if (!canvas || !btn) return;
+    if (!canvas || !dateCard) return;
 
     function resizeCanvas() {
       if (scratchCleared) return;
-      var rect = btn.getBoundingClientRect();
-      if (!rect.width || !rect.height) return;
-      canvas.width = rect.width;
-      canvas.height = rect.height;
+      var rect = dateCard.getBoundingClientRect();
+      var w = Math.round(rect.width || dateCard.offsetWidth || 300);
+      var h = Math.round(rect.height || dateCard.offsetHeight || 72);
+      if (!w || !h) return;
+      canvas.width = w;
+      canvas.height = h;
       drawFoil();
     }
 
@@ -234,6 +237,7 @@
       var ctx = canvas.getContext('2d');
       var w = canvas.width;
       var h = canvas.height;
+      if (!w || !h) return;
 
       ctx.globalCompositeOperation = 'source-over';
 
@@ -274,18 +278,139 @@
 
       // Scratch Card label text in pure Gujarati
       ctx.fillStyle = '#4a021e';
-      ctx.font = '700 ' + Math.max(12, Math.round(h * 0.31)) + 'px "Noto Serif Gujarati", "Fraunces", serif';
+      ctx.font = '700 ' + Math.max(12, Math.round(h * 0.30)) + 'px "Noto Serif Gujarati", serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+      ctx.shadowColor = 'rgba(255, 255, 255, 0.85)';
       ctx.shadowBlur = 4;
-      ctx.fillText('✦ સ્ક્રેચ કરીને શુભ મુહૂર્ત જુઓ ✦', w / 2, h / 2);
+      ctx.fillText('✦ શુભ લગ્ન મુહૂર્ત દર્શન ✦', w / 2, h / 2);
       ctx.shadowBlur = 0;
     }
 
     window.addEventListener('resize', resizeCanvas);
-    window.setTimeout(resizeCanvas, 150);
+    window.setTimeout(resizeCanvas, 100);
+    window.setTimeout(resizeCanvas, 350);
 
+    function scratch(x, y, radius) {
+      if (scratchCleared) return;
+      var ctx = canvas.getContext('2d');
+      var r = radius || Math.max(22, Math.round(canvas.height * 0.35));
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function spawnDust(x, y) {
+      if (!scratchWrap) return;
+      var dust = document.createElement('span');
+      dust.className = 'ry-scratch-dust';
+      dust.textContent = Math.random() > 0.4 ? '✦' : '✧';
+      dust.style.left = x + 'px';
+      dust.style.top = y + 'px';
+      var dx = (Math.random() * 50 - 25).toFixed(1) + 'px';
+      var dy = (-Math.random() * 35 - 10).toFixed(1) + 'px';
+      dust.style.setProperty('--dx', dx);
+      dust.style.setProperty('--dy', dy);
+      scratchWrap.appendChild(dust);
+      window.setTimeout(function () {
+        if (dust.parentNode) dust.parentNode.removeChild(dust);
+      }, 620);
+    }
+
+    function clearScratchCard() {
+      if (scratchCleared) return;
+      scratchCleared = true;
+      if (autoScratchRaf) cancelAnimationFrame(autoScratchRaf);
+
+      canvas.classList.add('is-cleared');
+      var badge = document.getElementById('ryScratchBadge');
+      if (badge) badge.style.opacity = '0';
+
+      // Run date reveal dials, knock, and flower shower
+      run();
+    }
+
+    // Auto-Scratch with smooth gold coin sweep
+    function startAutoScratch() {
+      if (scratchCleared || autoScratchRunning) return;
+      autoScratchRunning = true;
+
+      // Ensure canvas is accurately sized
+      resizeCanvas();
+
+      var w = canvas.width || 300;
+      var h = canvas.height || 72;
+      var coinSize = Math.max(34, Math.round(h * 0.55));
+
+      var coin = document.createElement('img');
+      coin.className = 'ry-scratch-coin';
+      coin.src = 'media/coin_cursor.svg';
+      coin.alt = '';
+      coin.setAttribute('aria-hidden', 'true');
+      coin.style.width = coinSize + 'px';
+      coin.style.height = coinSize + 'px';
+      coin.style.left = '10px';
+      coin.style.top = Math.round(h / 2 - coinSize / 2) + 'px';
+      (scratchWrap || canvas.parentNode).appendChild(coin);
+
+      var startTime = null;
+      var duration = 1800; // 1.8 seconds auto-scratch sweep
+
+      function step(now) {
+        if (scratchCleared) {
+          if (coin.parentNode) coin.parentNode.removeChild(coin);
+          return;
+        }
+        if (!startTime) startTime = now;
+        var elapsed = now - startTime;
+        var progress = Math.min(1, elapsed / duration);
+
+        // Sinusoidal sweep motion across width in 3 passes:
+        // Pass 1: left to right (0.00 -> 0.36)
+        // Pass 2: right to left (0.36 -> 0.72)
+        // Pass 3: left to right finish (0.72 -> 1.00)
+        var px;
+        if (progress < 0.36) {
+          px = progress / 0.36;
+        } else if (progress < 0.72) {
+          px = 1 - ((progress - 0.36) / 0.36);
+        } else {
+          px = (progress - 0.72) / 0.28;
+        }
+
+        var x = 20 + px * (w - 40);
+        var y = (h / 2) + Math.sin(progress * Math.PI * 8) * (h * 0.28);
+        var radius = Math.max(26, Math.round(h * 0.42));
+
+        scratch(x, y, radius);
+
+        coin.style.left = (x - coinSize / 2) + 'px';
+        coin.style.top = (y - coinSize / 2) + 'px';
+
+        // Spawn gold sparkles dust
+        if (Math.random() < 0.7) {
+          spawnDust(x, y);
+        }
+
+        if (progress < 1) {
+          autoScratchRaf = requestAnimationFrame(step);
+        } else {
+          // Finished sweeping! Fade out coin and reveal
+          coin.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+          coin.style.opacity = '0';
+          coin.style.transform = 'scale(1.2)';
+          window.setTimeout(function () {
+            if (coin.parentNode) coin.parentNode.removeChild(coin);
+          }, 420);
+          clearScratchCard();
+        }
+      }
+
+      autoScratchRaf = requestAnimationFrame(step);
+    }
+
+    // Manual scratch fallback if user drags or touches
     function getPos(e) {
       var rect = canvas.getBoundingClientRect();
       var clientX = e.clientX || (e.touches && e.touches[0] && e.touches[0].clientX) || 0;
@@ -296,67 +421,13 @@
       };
     }
 
-    // Accurate 50% scratched calculation
-    function checkScratchPercentage() {
-      if (scratchCleared) return;
-      var ctx = canvas.getContext('2d');
-      var w = canvas.width;
-      var h = canvas.height;
-      if (!w || !h) return;
-
-      var step = 8;
-      var imgData = ctx.getImageData(0, 0, w, h).data;
-      var total = 0;
-      var cleared = 0;
-
-      for (var y = 0; y < h; y += step) {
-        for (var x = 0; x < w; x += step) {
-          var index = (y * w + x) * 4;
-          total++;
-          if (imgData[index + 3] < 128) {
-            cleared++;
-          }
-        }
-      }
-
-      var ratio = total > 0 ? (cleared / total) : 0;
-      // 50% scratch threshold requested by user
-      if (ratio >= 0.50) {
-        clearScratchCard();
-      }
-    }
-
     var scratchStrokeCount = 0;
-    function scratch(x, y) {
-      if (scratchCleared) return;
-      var ctx = canvas.getContext('2d');
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath();
-      ctx.arc(x, y, 22, 0, Math.PI * 2);
-      ctx.fill();
-
-      scratchStrokeCount++;
-      if (scratchStrokeCount % 3 === 0) {
-        checkScratchPercentage();
-      }
-    }
-
-    function clearScratchCard() {
-      if (scratchCleared) return;
-      scratchCleared = true;
-      canvas.classList.add('is-cleared');
-      var badge = document.getElementById('ryScratchBadge');
-      if (badge) badge.style.opacity = '0';
-
-      // Run date reveal dials
-      run();
-    }
-
     canvas.addEventListener('pointerdown', function (e) {
       if (scratchCleared) return;
       isScratching = true;
       var pos = getPos(e);
       scratch(pos.x, pos.y);
+      spawnDust(pos.x, pos.y);
       try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
     });
 
@@ -364,12 +435,21 @@
       if (!isScratching || scratchCleared) return;
       var pos = getPos(e);
       scratch(pos.x, pos.y);
+      scratchStrokeCount++;
+      if (scratchStrokeCount % 2 === 0) {
+        spawnDust(pos.x, pos.y);
+      }
+      if (scratchStrokeCount > 15) {
+        clearScratchCard();
+      }
     });
 
     function stopScratch(e) {
       isScratching = false;
       try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
-      checkScratchPercentage();
+      if (scratchStrokeCount > 10) {
+        clearScratchCard();
+      }
     }
 
     canvas.addEventListener('pointerup', stopScratch);
@@ -379,6 +459,51 @@
     canvas.addEventListener('click', function () {
       clearScratchCard();
     });
+
+    // Auto-trigger when scrolled into view
+    setupAutoTrigger(startAutoScratch);
+  }
+
+  function setupAutoTrigger(triggerFn) {
+    var triggered = false;
+
+    function runTrigger() {
+      if (triggered || scratchCleared) return;
+      triggered = true;
+      window.setTimeout(function () {
+        if (!scratchCleared) {
+          triggerFn();
+        }
+      }, 450);
+    }
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            runTrigger();
+            try { observer.disconnect(); } catch (_) {}
+          }
+        });
+      }, { threshold: 0.25 });
+      observer.observe(section);
+    }
+
+    // Scroll fallback
+    function onScroll() {
+      if (triggered || scratchCleared) {
+        window.removeEventListener('scroll', onScroll);
+        return;
+      }
+      var rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.85 && rect.bottom > 0) {
+        runTrigger();
+        window.removeEventListener('scroll', onScroll);
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.setTimeout(onScroll, 600);
   }
 
   initScratchCard();
