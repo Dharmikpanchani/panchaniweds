@@ -69,22 +69,33 @@ window.BalconyMusic = (function () {
       src = DEFAULT_TRACK;
     }
 
-    var audio = new Audio();
+    // Grab or create the DOM audio element with explicit iOS Safari inline attributes
+    var audio = document.getElementById('ryBgMusic');
+    if (!audio) {
+      audio = document.createElement('audio');
+      audio.id = 'ryBgMusic';
+      audio.setAttribute('playsinline', '');
+      audio.setAttribute('webkit-playsinline', '');
+      document.body.appendChild(audio);
+    } else {
+      audio.setAttribute('playsinline', '');
+      audio.setAttribute('webkit-playsinline', '');
+    }
+
     audio.loop = true;
     audio.preload = 'auto';
     audio.volume = typeof cfg.volume === 'number' ? clamp01(cfg.volume) : 0.5;
-    audio.src = src;
+    if (!audio.src || audio.src.indexOf('media/music.mp3') === -1) {
+      audio.src = src;
+    }
 
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'music-toggle';
-    btn.hidden = true; // revealed once we know a track can play
+    btn.hidden = false; // keep visible so user can always tap to play/mute
     btn.innerHTML = ICON_ON + ICON_OFF;
     document.body.appendChild(btn);
 
-    // Host previews open the template with ?muted=1 so background music
-    // doesn't autoplay in the dashboard workspace; the visitor unmutes with
-    // this toggle.
     var startMuted = false;
     try { startMuted = new URLSearchParams(window.location.search).get('muted') === '1'; } catch (e) {}
     var wantsSound = !startMuted;
@@ -97,18 +108,23 @@ window.BalconyMusic = (function () {
       btn.title = isPlaying ? 'સંગીત બંધ કરો' : 'સંગીત ચાલુ કરો';
     }
 
-    function tryPlay() {
+    // Global music starter (called synchronously on touch/click)
+    window.RoyaleMusicStart = function () {
       if (!wantsSound) return;
+      audio.muted = false;
       var p = audio.play();
       if (p && typeof p.then === 'function') {
         p.then(function () {
           reflect();
           disarmUnlock();
-        }).catch(function () { /* blocked - a later gesture will retry */ });
+        }).catch(function (err) {
+          console.warn('[Music] user gesture play attempt:', err);
+        });
       }
-    }
+    };
 
     function revealToggle() { btn.hidden = false; reflect(); }
+    if (audio.readyState >= 2) revealToggle();
     audio.addEventListener('loadedmetadata', revealToggle, { once: true });
     audio.addEventListener('canplay', revealToggle, { once: true });
     audio.addEventListener('play', function () {
@@ -124,52 +140,69 @@ window.BalconyMusic = (function () {
       if (audio.src.indexOf(DEFAULT_TRACK) === -1) {
         audio.src = DEFAULT_TRACK;
         audio.load();
-        tryPlay();
+        if (window.RoyaleMusicStart) window.RoyaleMusicStart();
       }
     });
 
-    tryPlay(); // first attempt - if autoplay permitted, plays immediately
+    // First attempt on load (supported on desktop, blocked by default on mobile)
+    if (window.RoyaleMusicStart) window.RoyaleMusicStart();
 
-    // Unlock on the first genuine interaction anywhere except the button
-    // itself (the button runs its own logic below).
-    var GESTURES = ['pointerdown', 'touchstart', 'touchend', 'click', 'keydown'];
+    // Unlock synchronously on the first user interaction across entire page
+    var GESTURES = ['touchstart', 'touchend', 'click', 'keydown'];
     function unlock(e) {
-      if (e && e.target && btn.contains(e.target)) return;
-      if (wantsSound && audio.paused) {
-        audio.muted = false;
-        tryPlay();
-      }
+      if (e && e.target && btn && btn.contains(e.target)) return;
+      if (window.RoyaleMusicStart) window.RoyaleMusicStart();
     }
 
     // Also trigger immediately when the wedding gate opens
     document.addEventListener('royale:gate-open', function () {
-      if (wantsSound && audio.paused) {
-        audio.muted = false;
-        tryPlay();
-      }
+      if (window.RoyaleMusicStart) window.RoyaleMusicStart();
     });
 
-    // Symmetrical, because the page coming back from the background may need
-    // to wait for a gesture all over again - re-adding the same listener for
-    // the same event is a no-op, so arming twice is harmless.
     function armUnlock() {
-      GESTURES.forEach(function (t) { window.addEventListener(t, unlock, { passive: true }); });
+      GESTURES.forEach(function (t) {
+        window.addEventListener(t, unlock, { capture: true, passive: true });
+      });
+      var coverBtn = document.getElementById('ryCoverBtn');
+      if (coverBtn) {
+        GESTURES.forEach(function (t) {
+          coverBtn.addEventListener(t, unlock, { capture: true, passive: true });
+        });
+      }
+      var gate = document.getElementById('ryCoverGate') || document.getElementById('ryGate');
+      if (gate) {
+        GESTURES.forEach(function (t) {
+          gate.addEventListener(t, unlock, { capture: true, passive: true });
+        });
+      }
     }
+
     function disarmUnlock() {
-      GESTURES.forEach(function (t) { window.removeEventListener(t, unlock); });
+      GESTURES.forEach(function (t) {
+        window.removeEventListener(t, unlock, { capture: true });
+      });
     }
     armUnlock();
 
-    btn.addEventListener('click', function () {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
       if (audio.paused || audio.muted) {
         wantsSound = true;
         audio.muted = false;
-        tryPlay();
+        var p = audio.play();
+        if (p && typeof p.then === 'function') {
+          p.then(function () {
+            reflect();
+            disarmUnlock();
+          }).catch(function (err) {
+            console.warn('[Music] button click error:', err);
+          });
+        }
       } else {
         wantsSound = false;
         audio.pause();
+        reflect();
       }
-      reflect();
     });
 
     // ---- Stopping when the invitation is no longer on screen ---------------

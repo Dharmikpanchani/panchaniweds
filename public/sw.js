@@ -1,5 +1,5 @@
 // Service Worker for Panchani Royal Wedding PWA
-const CACHE_NAME = 'panchani-wedding-v1';
+const CACHE_NAME = 'panchani-wedding-v3';
 const PRECACHE_ASSETS = [
   './',
   './index.html',
@@ -59,6 +59,18 @@ self.addEventListener('fetch', (event) => {
 
   // Don't intercept analytics or third-party APIs like emailjs
   if (url.origin.includes('api.emailjs.com') || url.origin.includes('google-analytics')) {
+    return;
+  }
+
+  // Bypass Service Worker completely for audio, video, and byte-range streaming (fixes iOS Safari & Android audio playback)
+  if (
+    url.pathname.endsWith('.mp3') ||
+    url.pathname.endsWith('.mp4') ||
+    url.pathname.endsWith('.wav') ||
+    url.pathname.endsWith('.m4a') ||
+    url.pathname.endsWith('.ogg') ||
+    event.request.headers.get('range')
+  ) {
     return;
   }
 

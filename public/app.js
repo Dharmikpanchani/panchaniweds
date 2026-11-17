@@ -55,6 +55,10 @@
     // The page behind is not scroll-locked (see .royale-gate in styles.css),
     // so make sure the reveal starts from the top of the hero.
     window.scrollTo(0, 0);
+    // Immediately unlock audio inside trusted user interaction call-stack
+    if (window.RoyaleMusicStart) {
+      try { window.RoyaleMusicStart(); } catch (_) { }
+    }
     // The hero video (below) starts from its first frame on this.
     document.dispatchEvent(new CustomEvent('royale:gate-open'));
 
@@ -69,6 +73,9 @@
   gate.addEventListener('wheel', function (e) { e.preventDefault(); }, { passive: false });
 
   gate.addEventListener('click', open);
+  gate.addEventListener('touchend', function () {
+    if (!root.classList.contains('is-open')) open();
+  }, { passive: true });
   gate.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
