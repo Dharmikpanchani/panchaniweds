@@ -118,28 +118,19 @@
   }
 
   // ---- The gate's card ---------------------------------------------------
-  // The symbol is painted as a mask so the artwork takes the ink colour, the
-  // same way papercut paints its own opening symbol.
   function renderInvocation() {
     const symEl = document.querySelector('.royale-card__symbol');
-    const sym = RY.symbolById(cfg.invocation.symbol);
     if (symEl) {
-      symEl.hidden = !sym.src;
-      if (sym.src) {
-        symEl.style.webkitMaskImage = "url('" + sym.src + "')";
-        symEl.style.maskImage = "url('" + sym.src + "')";
-      }
+      symEl.hidden = false;
+      symEl.style.mask = 'none';
+      symEl.style.webkitMask = 'none';
+      symEl.style.maskImage = 'none';
+      symEl.style.webkitMaskImage = 'none';
     }
 
-    const line = RY.invocationLines(cfg.invocation);
     const mantra = $('ryInvocation');
-    if (mantra) {
-      mantra.textContent = line.text || '';
-      mantra.hidden = !line.text;
-      mantra.dir = line.rtl ? 'rtl' : 'ltr';
-      mantra.style.fontFamily = (line.isEnglish || line.isCustom || !line.font)
-        ? 'var(--font-display)'
-        : "'" + line.font + "', serif";
+    if (mantra && !mantra.innerHTML.includes('વક્રતુંડ')) {
+      mantra.innerHTML = '॥ શ્રી ગણેશાય નમઃ ॥<br><span class="royale-card__shloka">વક્રતુંડ મહાકાય સૂર્યકોટિ સમપ્રભ । નિર્વિઘ્નં કુરુ મે દેવ સર્વકાર્યેષુ સર્વદા ॥</span>';
     }
 
     // One button opens the tradition/script/symbol picker (editor.js).

@@ -30,7 +30,7 @@
   // identical choice in every template. Add a tradition, script or symbol in
   // one and add it to the others.
   const SYMBOLS = [
-    { id: 'ganesha', label: 'Ganesha', src: '../symbols/_ganesha.svg' },
+    { id: 'ganesha', label: 'Ganesha', src: 'media/ganesha.svg' },
     { id: 'buddha', label: 'Buddha', src: '../symbols/_buddha.svg' },
     { id: 'sindhi', label: 'Jhulelal', src: '../symbols/_sindhi.svg' },
     { id: 'sikh', label: 'Ik Onkar', src: '../symbols/_sikh.svg' },
