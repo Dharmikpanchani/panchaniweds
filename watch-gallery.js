@@ -14,7 +14,7 @@ function updateManifest() {
     const images = files
       .filter(f => validExts.has(path.extname(f).toLowerCase()))
       .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
-      .map(f => `/gallery/${f}`);
+      .map(f => `gallery/${f}`);
 
     const newContent = JSON.stringify(images, null, 2) + '\n';
     let oldContent = '';

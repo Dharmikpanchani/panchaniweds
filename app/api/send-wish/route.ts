@@ -23,19 +23,28 @@ export async function POST(req: NextRequest) {
     const recipientEmail =
       process.env.NEXT_PUBLIC_RECIPIENT_EMAIL || 'dharmikpanchani9@gmail.com';
 
-    // Wedding-specific template parameters
+    // Comprehensive template parameters matching any EmailJS template
     const templateParams = {
+      name: name,
       from_name: name,
+      user_name: name,
+      to_name: 'ચિ. ધાર્મિક અને કુ. નિશા (પંચાણી પરિવાર)',
+      to_email: recipientEmail,
+      recipient_email: recipientEmail,
+      email: recipientEmail,
       from_email: 'wedding-wishes@dharmikpanchani.com',
+      user_email: recipientEmail,
+      reply_to: recipientEmail,
       phone: phone,
       number: phone,
+      contact_number: phone,
+      mobile: phone,
+      message: message,
+      user_message: message,
       subject: 'શુભ લગ્ન શુભેચ્છા અને આશીર્વાદ સંદેશ (ધાર્મિક & નિશા)',
       title: 'પંચાણી પરિવાર શુભ વિવાહ - આશીર્વાદ સંદેશ',
       address: 'પંચાણી પરિવાર રોયલ વેડિંગ (Panchani Royal Wedding)',
       event: 'ચિ. ધાર્મિક અને કુ. નિશા શુભ વિવાહ પ્રસંગ',
-      to_name: 'ચિ. ધાર્મિક અને કુ. નિશા (પંચાણી પરિવાર)',
-      to_email: recipientEmail,
-      message: message,
     };
 
     // 1. Try sending via EmailJS
