@@ -6,7 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <!-- Favicon & Brand Icon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <!-- PWA Web App Manifest & Mobile App Capabilities -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ધાર્મિક &amp; નિશા">
+    <meta name="application-name" content="ધાર્મિક &amp; નિશા">
     <!-- Primary Meta & SEO Tags -->
     <title>॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક &amp; કુ. નિશા | પંચાણી પરિવાર</title>
     <meta name="title" content="॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક &amp; કુ. નિશા | પંચાણી પરિવાર">
@@ -1154,6 +1162,8 @@
     <script src="editor.js"></script>
     <script src="_platform/music.js"></script>
     <script>if (window.BalconyMusic) window.BalconyMusic.mount(window.Royale);</script>
+    <!-- Progressive Web App Controller (Install Prompt & Offline Cache) -->
+    <script src="pwa.js"></script>
 </body>
 
 </html>

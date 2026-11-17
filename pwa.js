@@ -1,0 +1,125 @@
+// Progressive Web App (PWA) Controller for Panchani Wedding Invitation
+(function () {
+  'use strict';
+
+  // 1. Register Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker
+        .register('./sw.js')
+        .then(function (reg) {
+          console.log('[PWA] Service Worker registered with scope:', reg.scope);
+        })
+        .catch(function (err) {
+          console.warn('[PWA] Service Worker registration failed:', err);
+        });
+    });
+  }
+
+  // 2. Check if already running as installed standalone app
+  var isStandalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+
+  if (isStandalone) {
+    console.log('[PWA] App is running in standalone mode.');
+    return;
+  }
+
+  var deferredPrompt = null;
+  var hasDismissed = sessionStorage.getItem('pwa_prompt_dismissed');
+
+  // Detect iOS Safari
+  var isIos = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+  var isSafari = isIos && !window.navigator.userAgent.includes('CriOS') && !window.navigator.userAgent.includes('FxiOS');
+
+  function createInstallBanner() {
+    if (document.getElementById('pwaInstallBanner')) return;
+
+    var banner = document.createElement('div');
+    banner.id = 'pwaInstallBanner';
+    banner.className = 'pwa-banner';
+
+    banner.innerHTML =
+      '<div class="pwa-banner__glow"></div>' +
+      '<div class="pwa-banner__content">' +
+        '<div class="pwa-banner__icon-box">' +
+          '<img src="icon-192.png" alt="Panchani Wedding App" class="pwa-banner__icon">' +
+        '</div>' +
+        '<div class="pwa-banner__info">' +
+          '<strong class="pwa-banner__title">પંચાણી રોયલ વેડિંગ એપ</strong>' +
+          '<p class="pwa-banner__desc">મોબાઈલમાં એપ ઇન્સ્ટોલ કરી સરળતાથી જુઓ</p>' +
+        '</div>' +
+        '<button type="button" class="pwa-banner__btn" id="pwaInstallBtn">' +
+          '<span>ઇન્સ્ટોલ કરો</span>' +
+        '</button>' +
+        '<button type="button" class="pwa-banner__close" id="pwaCloseBtn" aria-label="Close">&times;</button>' +
+      '</div>';
+
+    document.body.appendChild(banner);
+
+    // Fade in banner smoothly after brief delay
+    setTimeout(function () {
+      banner.classList.add('is-visible');
+    }, 1500);
+
+    var installBtn = document.getElementById('pwaInstallBtn');
+    var closeBtn = document.getElementById('pwaCloseBtn');
+
+    if (installBtn) {
+      installBtn.addEventListener('click', function () {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then(function (choice) {
+            console.log('[PWA] User choice:', choice.outcome);
+            deferredPrompt = null;
+            banner.classList.remove('is-visible');
+            setTimeout(function () { banner.remove(); }, 400);
+          });
+        } else if (isSafari) {
+          // Show iOS specific guide
+          alert("iPhone માં એપ ઇન્સ્ટોલ કરવા માટે:\n૧. નીચે 'Share' (શેર) બટન ⎋ દબાવો.\n૨. સ્ક્રોલ કરીને 'Add to Home Screen' ➕ પસંદ કરો.");
+        }
+      });
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function () {
+        banner.classList.remove('is-visible');
+        sessionStorage.setItem('pwa_prompt_dismissed', 'true');
+        setTimeout(function () { banner.remove(); }, 400);
+      });
+    }
+  }
+
+  // 3. Android / Chromium BeforeInstallPrompt Event
+  window.addEventListener('beforeinstallprompt', function (e) {
+    // Prevent default mini-infobar on mobile Chrome
+    e.preventDefault();
+    deferredPrompt = e;
+
+    if (!hasDismissed) {
+      createInstallBanner();
+    }
+  });
+
+  // 4. iOS Safari Helper (shown once per session if not installed)
+  if (isSafari && !hasDismissed && !isStandalone) {
+    window.addEventListener('DOMContentLoaded', function () {
+      setTimeout(function () {
+        createInstallBanner();
+      }, 2500);
+    });
+  }
+
+  // Hide banner if app is installed
+  window.addEventListener('appinstalled', function () {
+    console.log('[PWA] Wedding invitation app successfully installed!');
+    var banner = document.getElementById('pwaInstallBanner');
+    if (banner) {
+      banner.classList.remove('is-visible');
+      setTimeout(function () { banner.remove(); }, 400);
+    }
+  });
+
+})();

@@ -1,21 +1,37 @@
 {
-  "name": "Panchani Wedding | Royale Indian Wedding Invitation",
-  "short_name": "Panchani Wedding",
-  "description": "Official wedding invitation of Rahul Panchani & Aditi by Panchani Parivar.",
-  "start_url": "/",
+  "name": "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક અને કુ. નિશા",
+  "short_name": "ધાર્મિક & નિશા",
+  "description": "પંચાણી પરિવાર શુભ વિવાહ નિમંત્રણ પત્રિકા • ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#fdf2e1",
-  "theme_color": "#560f31",
+  "orientation": "portrait",
+  "background_color": "#4a021e",
+  "theme_color": "#4a021e",
   "icons": [
     {
-      "src": "/media/ganesha.svg",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/media/elephant.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ]
 }
