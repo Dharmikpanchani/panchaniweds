@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
       mobile: phone,
       message: message,
       user_message: message,
+      message_html: message.replace(/\n/g, '<br>'),
       subject: 'શુભ લગ્ન શુભેચ્છા અને આશીર્વાદ સંદેશ (ધાર્મિક & નિશા)',
       title: 'પાંચાણી પરિવાર શુભ વિવાહ - આશીર્વાદ સંદેશ',
       address: 'પાંચાણી પરિવાર રોયલ વેડિંગ (Panchani Royal Wedding)',
