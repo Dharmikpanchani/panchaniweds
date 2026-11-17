@@ -55,9 +55,9 @@
 
     // All three start together and the later ones simply run longer, which
     // is how a real set of dials behaves.
-    roll('day', dayCells(), 2, 1750);
-    roll('month', monthCells(), 2, 2250);
-    roll('year', yearCells(), 2, 2750);
+    roll('days', dayCells(), 2, 1750);
+    roll('hours', hourCells(), 2, 2250);
+    roll('minutes', minuteCells(), 2, 2750);
 
     // The gold goes up the moment the last dial lands, and the plaques knock
     // just behind it - so they jump at the burst rather than having quietly
@@ -237,34 +237,33 @@
 
       ctx.globalCompositeOperation = 'source-over';
 
-      // Outer gold foil
+      // Outer rich royal antique gold foil
       var grad = ctx.createLinearGradient(0, 0, w, h);
-      grad.addColorStop(0, '#e5c07b');
-      grad.addColorStop(0.2, '#fff4cc');
-      grad.addColorStop(0.4, '#ffd700');
-      grad.addColorStop(0.65, '#c99e32');
-      grad.addColorStop(0.85, '#ffe58f');
-      grad.addColorStop(1, '#996515');
+      grad.addColorStop(0, '#c99e32');
+      grad.addColorStop(0.2, '#fdf7d5');
+      grad.addColorStop(0.45, '#d4af37');
+      grad.addColorStop(0.7, '#f5e2a2');
+      grad.addColorStop(1, '#936a1e');
 
       ctx.beginPath();
       ctx.roundRect(0, 0, w, h, [h / 2]);
       ctx.fillStyle = grad;
       ctx.fill();
 
-      // Scalloped border frame
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = '#fff8db';
+      // Scalloped gold border frame
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = '#fff9e6';
       ctx.stroke();
 
       // Inner thin rim
       ctx.beginPath();
       ctx.roundRect(3, 3, w - 6, h - 6, [(h - 6) / 2]);
       ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(120, 83, 16, 0.4)';
+      ctx.strokeStyle = 'rgba(74, 2, 30, 0.35)';
       ctx.stroke();
 
       // Royal sparkles on the foil
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
       for (var i = 0; i < 24; i++) {
         var rx = (Math.sin(i * 17) * 0.5 + 0.5) * (w - 30) + 15;
         var ry = (Math.cos(i * 29) * 0.5 + 0.5) * (h - 16) + 8;
@@ -275,10 +274,10 @@
 
       // Scratch Card label text in pure Gujarati
       ctx.fillStyle = '#4a021e';
-      ctx.font = '700 ' + Math.max(12, Math.round(h * 0.3)) + 'px "Noto Serif Gujarati", "Fraunces", serif';
+      ctx.font = '700 ' + Math.max(12, Math.round(h * 0.31)) + 'px "Noto Serif Gujarati", "Fraunces", serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.shadowColor = 'rgba(255, 255, 255, 0.7)';
+      ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
       ctx.shadowBlur = 4;
       ctx.fillText('✦ સ્ક્રેચ કરીને શુભ મુહૂર્ત જુઓ ✦', w / 2, h / 2);
       ctx.shadowBlur = 0;
@@ -384,10 +383,39 @@
 
   initScratchCard();
 
+  var countdownInterval = null;
+
+  function startLiveCountdown() {
+    if (countdownInterval) clearInterval(countdownInterval);
+    countdownInterval = setInterval(function () {
+      var rem = getRemaining();
+      var daysStrip = section.querySelector('[data-dial="days"] [data-strip]');
+      var hoursStrip = section.querySelector('[data-dial="hours"] [data-strip]');
+      var minutesStrip = section.querySelector('[data-dial="minutes"] [data-strip]');
+
+      if (daysStrip && daysStrip.children.length <= 1) daysStrip.innerHTML = cell(toGuj(pad(rem.days)));
+      if (hoursStrip && hoursStrip.children.length <= 1) hoursStrip.innerHTML = cell(toGuj(pad(rem.hours)));
+      if (minutesStrip && minutesStrip.children.length <= 1) minutesStrip.innerHTML = cell(toGuj(pad(rem.minutes)));
+    }, 1000);
+  }
+
   function finish() {
     section.classList.remove('is-revealing');
     section.classList.add('is-revealed');
     if (after) after.hidden = false;
+
+    // Settle strips onto single live values after rolling completes
+    var rem = getRemaining();
+    ['days', 'hours', 'minutes'].forEach(function (name) {
+      var strip = section.querySelector('[data-dial="' + name + '"] [data-strip]');
+      if (!strip) return;
+      var val = (name === 'days') ? rem.days : (name === 'hours' ? rem.hours : rem.minutes);
+      strip.style.transition = 'none';
+      strip.style.transform = 'translateY(0)';
+      strip.innerHTML = cell(toGuj(pad(val)));
+    });
+
+    startLiveCountdown();
   }
 
   /**
@@ -419,7 +447,7 @@
 
   /** The hop the three plaques give as the gold goes up, left to right. */
   function knock() {
-    ['day', 'month', 'year'].forEach(function (name, i) {
+    ['days', 'hours', 'minutes'].forEach(function (name, i) {
       var plaque = section.querySelector('[data-dial="' + name + '"]');
       if (!plaque) return;
       window.setTimeout(function () {
@@ -431,7 +459,7 @@
 
   /** Every plaque straight onto its value, fading in one after another. */
   function settleAll() {
-    [['day', dayCells()], ['month', monthCells()], ['year', yearCells()]]
+    [['days', dayCells()], ['hours', hourCells()], ['minutes', minuteCells()]]
       .forEach(function (pair, i) {
         var plaque = section.querySelector('[data-dial="' + pair[0] + '"]');
         var strip = plaque && plaque.querySelector('[data-strip]');
@@ -444,12 +472,14 @@
           strip.style.opacity = '1';
         }, 90 + i * 260);
       });
+    startLiveCountdown();
   }
 
   function announce() {
     if (!said) return;
-    said.textContent = 'શુભ લગ્ન તારીખ: ' +
-      (when.dayDisplay || toGuj(when.day)) + ' ' + MONTHS_LONG[when.month - 1] + ' ' + toGuj(when.year);
+    var rem = getRemaining();
+    said.textContent = 'શુભ લગ્ન મુહૂર્ત બાકી સમય: ' +
+      toGuj(rem.days) + ' દિવસ, ' + toGuj(rem.hours) + ' કલાક, ' + toGuj(rem.minutes) + ' મિનિટ. શુભ લગ્ન તિથિ: ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭';
   }
 
   var GUJ_DIGITS = { '0': '૦', '1': '૧', '2': '૨', '3': '૩', '4': '૪', '5': '૫', '6': '૬', '7': '૭', '8': '૮', '9': '૯' };
@@ -466,26 +496,45 @@
     return n < 10 ? '0' + n : String(n);
   }
 
+  function getRemaining() {
+    // Target wedding commencement: 28 January 2027, 10:00 AM IST
+    var target = new Date(2027, 0, 28, 10, 0, 0).getTime();
+    var now = Date.now();
+    var diff = Math.max(0, target - now);
+
+    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    return {
+      days: days,
+      hours: hours,
+      minutes: minutes,
+      seconds: seconds
+    };
+  }
+
   function dayCells() {
+    var rem = getRemaining();
     var all = [];
-    for (var d = 1; d <= 31; d++) all.push(toGuj(pad(d)));
-    var disp = when.dayDisplay ? when.dayDisplay.replace('&', 'અને') : toGuj(pad(when.day));
-    if (all.indexOf(disp) === -1) {
-      all.push(disp);
-      return { all: all, index: all.length - 1 };
-    }
-    return { all: all, index: when.day - 1 };
+    var max = Math.max(99, rem.days);
+    for (var d = 1; d <= max; d++) all.push(toGuj(pad(d)));
+    return { all: all, index: Math.min(all.length - 1, rem.days - 1) };
   }
 
-  function monthCells() {
-    return { all: MONTHS.slice(), index: when.month - 1 };
+  function hourCells() {
+    var rem = getRemaining();
+    var all = [];
+    for (var h = 0; h < 24; h++) all.push(toGuj(pad(h)));
+    return { all: all, index: rem.hours % 24 };
   }
 
-  /** Years around the real one, in pure Gujarati digits. */
-  function yearCells() {
+  function minuteCells() {
+    var rem = getRemaining();
     var all = [];
-    for (var y = when.year - 4; y <= when.year + 3; y++) all.push(toGuj(y));
-    return { all: all, index: all.indexOf(toGuj(when.year)) };
+    for (var m = 0; m < 60; m++) all.push(toGuj(pad(m)));
+    return { all: all, index: rem.minutes % 60 };
   }
 
   // ---- the date -------------------------------------------------------------

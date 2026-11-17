@@ -82,16 +82,26 @@
   function getFrameTargetScroll(idx) {
     if (!frames || !frames.length) return 0;
     var i = Math.max(0, Math.min(frames.length - 1, idx));
-    var f = frames[i].el;
     var maxScroll = scroller.scrollWidth - scroller.clientWidth;
     if (maxScroll <= 0) return 0;
 
+    var isMobile = scroller.clientWidth <= 700;
+    if (isMobile) {
+      return Math.max(0, Math.min(maxScroll, Math.round(i * scroller.clientWidth)));
+    }
+
+    var f = frames[i].el;
     var centerOffset = f.offsetLeft - (scroller.clientWidth - f.offsetWidth) / 2;
     return Math.max(0, Math.min(maxScroll, Math.round(centerOffset)));
   }
 
   function getNearestFrameIndex() {
     if (!frames || !frames.length) return 0;
+    var isMobile = scroller.clientWidth <= 700;
+    if (isMobile) {
+      var w = scroller.clientWidth || 1;
+      return Math.max(0, Math.min(frames.length - 1, Math.round(scroller.scrollLeft / w)));
+    }
     var center = scroller.scrollLeft + scroller.clientWidth / 2;
     var closest = 0;
     var minDiff = Infinity;
@@ -107,7 +117,56 @@
     return closest;
   }
 
-  function pauseAutoSwipe() {
+  var touchStartX = 0;
+  var touchStartY = 0;
+  var isSwipingByTouch = false;
+
+  function onTouchStart(e) {
+    var touch = e.touches ? e.touches[0] : e;
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    isSwipingByTouch = false;
+  }
+
+  function onTouchMove(e) {
+    var touch = e.touches ? e.touches[0] : e;
+    var dx = Math.abs(touch.clientX - touchStartX);
+    var dy = Math.abs(touch.clientY - touchStartY);
+    if (dx > 8 && dx > dy) {
+      isSwipingByTouch = true;
+      userInteracting = true;
+      scroller.classList.add('is-touch-snapping');
+      if (userTimer) clearTimeout(userTimer);
+    }
+  }
+
+  function onTouchEnd() {
+    if (isSwipingByTouch || userInteracting) {
+      scroller.classList.remove('is-touch-snapping');
+      if (userTimer) clearTimeout(userTimer);
+      userTimer = setTimeout(function () {
+        userInteracting = false;
+        isSwipingByTouch = false;
+        currentFrameIndex = getNearestFrameIndex();
+        swipeState = 'PAUSE';
+        stateStartTime = performance.now();
+      }, 1800);
+    }
+  }
+
+  scroller.addEventListener('touchstart', onTouchStart, { passive: true });
+  scroller.addEventListener('touchmove', onTouchMove, { passive: true });
+  scroller.addEventListener('touchend', onTouchEnd, { passive: true });
+  scroller.addEventListener('touchcancel', onTouchEnd, { passive: true });
+
+  scroller.addEventListener('mousedown', function () {
+    userInteracting = true;
+    if (userTimer) clearTimeout(userTimer);
+  });
+  window.addEventListener('mouseup', function () {
+    if (userInteracting) onTouchEnd();
+  });
+  scroller.addEventListener('wheel', function () {
     userInteracting = true;
     if (userTimer) clearTimeout(userTimer);
     userTimer = setTimeout(function () {
@@ -115,12 +174,8 @@
       currentFrameIndex = getNearestFrameIndex();
       swipeState = 'PAUSE';
       stateStartTime = performance.now();
-    }, 2200);
-  }
-
-  scroller.addEventListener('pointerdown', pauseAutoSwipe);
-  scroller.addEventListener('touchstart', pauseAutoSwipe, { passive: true });
-  scroller.addEventListener('wheel', pauseAutoSwipe, { passive: true });
+    }, 1800);
+  }, { passive: true });
 
   function frame(now) {
     var t = now / 1000;
@@ -149,7 +204,6 @@
             currentFrameIndex = nextIndex;
             swipeState = 'SWIPING';
             stateStartTime = now;
-            scroller.style.scrollSnapType = 'none';
           }
         } else if (swipeState === 'SWIPING') {
           var progress = Math.min(1, (now - stateStartTime) / activeDuration);
@@ -160,7 +214,6 @@
             scroller.scrollLeft = swipeToScroll;
             swipeState = 'PAUSE';
             stateStartTime = now;
-            scroller.style.scrollSnapType = '';
           }
         }
       }
@@ -293,10 +346,11 @@
       var items = [];
       var storyAdded = 0;
       imgs.forEach(function (src, idx) {
+        var cleanSrc = (src || '').replace(/^\//, '');
         var isPortrait = idx % 2 === 0;
         items.push({
           type: isPortrait ? 'portrait' : 'landscape',
-          image: src,
+          image: cleanSrc,
           placeholder: false,
           caption: captions[idx % captions.length],
           hang: hangs[idx % hangs.length],
@@ -331,7 +385,7 @@
       reinitPhysics();
     }
 
-    fetch('/api/gallery?t=' + Date.now())
+    fetch('api/gallery?t=' + Date.now())
       .then(function (res) { return res.json(); })
       .then(function (data) {
         if (data && Array.isArray(data.images) && data.images.length > 0) {
@@ -339,7 +393,7 @@
         }
       })
       .catch(function () {
-        fetch('/gallery/manifest.json?t=' + Date.now())
+        fetch('gallery/manifest.json?t=' + Date.now())
           .then(function (res) { return res.json(); })
           .then(function (imgs) {
             if (Array.isArray(imgs) && imgs.length > 0) {

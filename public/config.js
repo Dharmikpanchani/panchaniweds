@@ -189,16 +189,16 @@
    * their own three are what load.
    */
   const GALLERY_STARTERS = [
-    { type: 'portrait', image: '/gallery/photo1.webp', placeholder: false, caption: '#શુભારંભ', hang: 118 },
-    { type: 'landscape', image: '/gallery/photo2.webp', placeholder: false, caption: '#મીઠીયાદો', hang: 150 },
+    { type: 'portrait', image: 'gallery/photo1.webp', placeholder: false, caption: '#શુભારંભ', hang: 118 },
+    { type: 'landscape', image: 'gallery/photo2.webp', placeholder: false, caption: '#મીઠીયાદો', hang: 150 },
     { type: 'story', text: 'કેટલીક વાર્તાઓ ભવ્ય શરૂઆતથી શરૂ થાય છે, પણ અમારી પ્રેમ કહાની એક સહજ અને મીઠી વાતચીતથી શરૂ થઈ હતી.', hang: 86 },
-    { type: 'portrait', image: '/gallery/photo3.webp', placeholder: false, caption: '#પ્રેમસફર', hang: 132 },
-    { type: 'landscape', image: '/gallery/photo4.webp', placeholder: false, caption: '#સ્નેહબંધન', hang: 100 },
+    { type: 'portrait', image: 'gallery/photo3.webp', placeholder: false, caption: '#પ્રેમસફર', hang: 132 },
+    { type: 'landscape', image: 'gallery/photo4.webp', placeholder: false, caption: '#સ્નેહબંધન', hang: 100 },
     { type: 'story', text: 'સમય જતાં મિત્રતા અતૂટ પ્રેમમાં બદલાઈ ગઈ, અને સમજાયું કે જીવનની સૌથી સુંદર પળો એ જ છે જે આપણે સાથે વિતાવી છે.', hang: 120 },
-    { type: 'portrait', image: '/gallery/photo5.webp', placeholder: false, caption: '#સપ્તપદી', hang: 150 },
-    { type: 'landscape', image: '/gallery/photo6.webp', placeholder: false, caption: '#અખંડસૌભાગ્ય', hang: 92 },
-    { type: 'portrait', image: '/gallery/photo7.webp', placeholder: false, caption: '#રૂડોઅવસર', hang: 125 },
-    { type: 'landscape', image: '/gallery/photo8.webp', placeholder: false, caption: '#મંગલોત્સવ', hang: 110 },
+    { type: 'portrait', image: 'gallery/photo5.webp', placeholder: false, caption: '#સપ્તપદી', hang: 150 },
+    { type: 'landscape', image: 'gallery/photo6.webp', placeholder: false, caption: '#અખંડસૌભાગ્ય', hang: 92 },
+    { type: 'portrait', image: 'gallery/photo7.webp', placeholder: false, caption: '#રૂડોઅવસર', hang: 125 },
+    { type: 'landscape', image: 'gallery/photo8.webp', placeholder: false, caption: '#મંગલોત્સવ', hang: 110 },
   ];
 
   const DEFAULTS = {

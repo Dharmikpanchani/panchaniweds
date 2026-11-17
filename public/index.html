@@ -4,6 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <!-- Favicon & Brand Icon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
     <!-- Primary Meta & SEO Tags -->
     <title>॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક &amp; કુ. નિશા | પંચાણી પરિવાર</title>
     <meta name="title" content="॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક &amp; કુ. નિશા | પંચાણી પરિવાર">
@@ -40,14 +43,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="#4a021e">
 
     <!-- Fonts: Fraunces, Cormorant Garamond, Gujarati and Sanskrit Devanagari -->
-    <link rel="stylesheet" href="/_platform/vendor/fonts/fonts.css">
+    <link rel="stylesheet" href="_platform/vendor/fonts/fonts.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Noto+Serif+Gujarati:wght@500;600;700;800&family=Tiro+Devanagari+Sanskrit&display=swap">
 
     <!-- crossorigin because the symbol is painted as a CSS mask, and masks are
          fetched in CORS mode - without it the preload would not be reused. -->
-    <link rel="preload" as="image" href="/symbols/_ganesha.svg" crossorigin>
+    <link rel="preload" as="image" href="symbols/_ganesha.svg" crossorigin>
     <!-- Hidden behind the gate on load, but the first thing the guest sees
          once the doors open - fetched up front so it is never late. Only the
          one for this viewport: the video's poster on a phone, the mandap
@@ -57,8 +60,8 @@
 
     <link rel="preload" as="image" href="media/gudiya_walking.webp">
     <!-- The shared platform chrome's own styling: the toolbar and the music control. -->
-    <link rel="stylesheet" href="/_platform/toolbar.css">
-    <link rel="stylesheet" href="/_platform/music.css">
+    <link rel="stylesheet" href="_platform/toolbar.css">
+    <link rel="stylesheet" href="_platform/music.css">
 
     <link rel="stylesheet" href="styles.css">
     <!-- Editing chrome - inert outside ?edit=1 (see editor.css). -->
@@ -338,26 +341,28 @@
          data-date is the wedding date as YYYY-MM-DD; left empty it falls back
          to 15 days from today, papercut's own placeholder. -->
     <section class="royale-date" id="ryDateReveal" data-date="2027-01-29" data-days="૨૮ અને ૨૯" aria-label="The date">
+        <!-- Royal shloka placed cleanly above the stage so it never collides with the lotus crown -->
+        <div class="royale-date__shloka" aria-hidden="true">॥ તદેવ લગ્નં સુદિનં તદેવ, તારાબલં ચંદ્રબલં તદેવ । વિદ્યાબલં દૈવબલં તદેવ, લક્ષ્મીપતે તેંયુગ્મં સ્મરામિ ॥</div>
+
         <div class="royale-date__stage">
-            <div class="royale-date__shloka" aria-hidden="true">॥ તદેવ લગ્નં સુદિનં તદેવ, તારાબલં ચંદ્રબલં તદેવ । વિદ્યાબલં દૈવબલં તદેવ, લક્ષ્મીપતે તેંયુગ્મં સ્મરામિ ॥</div>
             <img class="royale-date__crown" src="media/lotus_bunch.png" alt="" aria-hidden="true" loading="lazy"
                 decoding="async">
 
-            <div class="royale-date__plaques" role="group" aria-label="Wedding date">
-                <div class="royale-date__plaque" data-dial="day">
-                    <span class="royale-date__cap">તારીખ</span>
+            <div class="royale-date__plaques" role="group" aria-label="Wedding countdown">
+                <div class="royale-date__plaque" data-dial="days">
+                    <span class="royale-date__cap">દિવસ</span>
                     <div class="royale-date__window">
                         <div class="royale-date__strip" data-strip></div>
                     </div>
                 </div>
-                <div class="royale-date__plaque" data-dial="month">
-                    <span class="royale-date__cap">માસ</span>
+                <div class="royale-date__plaque" data-dial="hours">
+                    <span class="royale-date__cap">કલાક</span>
                     <div class="royale-date__window">
                         <div class="royale-date__strip" data-strip></div>
                     </div>
                 </div>
-                <div class="royale-date__plaque" data-dial="year">
-                    <span class="royale-date__cap">વર્ષ</span>
+                <div class="royale-date__plaque" data-dial="minutes">
+                    <span class="royale-date__cap">મિનિટ</span>
                     <div class="royale-date__window">
                         <div class="royale-date__strip" data-strip></div>
                     </div>
@@ -456,7 +461,7 @@
                             <div class="gframe__lip">
                                 <figure class="gframe__mat">
                                     <div class="gframe__photo">
-                                        <img class="gframe__img" src="/gallery/photo1.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
+                                        <img class="gframe__img" src="gallery/photo1.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
                                     </div>
                                     <figcaption class="gframe__caption">#શુભારંભ</figcaption>
                                 </figure>
@@ -481,7 +486,7 @@
                             <div class="gframe__lip">
                                 <figure class="gframe__mat">
                                     <div class="gframe__photo">
-                                        <img class="gframe__img" src="/gallery/photo2.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
+                                        <img class="gframe__img" src="gallery/photo2.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
                                     </div>
                                     <figcaption class="gframe__caption">#મીઠીયાદો</figcaption>
                                 </figure>
@@ -528,7 +533,7 @@
                             <div class="gframe__lip">
                                 <figure class="gframe__mat">
                                     <div class="gframe__photo">
-                                        <img class="gframe__img" src="/gallery/photo3.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
+                                        <img class="gframe__img" src="gallery/photo3.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
                                     </div>
                                     <figcaption class="gframe__caption">#પ્રેમસફર</figcaption>
                                 </figure>
@@ -553,7 +558,7 @@
                             <div class="gframe__lip">
                                 <figure class="gframe__mat">
                                     <div class="gframe__photo">
-                                        <img class="gframe__img" src="/gallery/photo4.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
+                                        <img class="gframe__img" src="gallery/photo4.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
                                     </div>
                                     <figcaption class="gframe__caption">#સ્નેહબંધન</figcaption>
                                 </figure>
@@ -600,7 +605,7 @@
                             <div class="gframe__lip">
                                 <figure class="gframe__mat">
                                     <div class="gframe__photo">
-                                        <img class="gframe__img" src="/gallery/photo5.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
+                                        <img class="gframe__img" src="gallery/photo5.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
                                     </div>
                                     <figcaption class="gframe__caption">#સપ્તપદી</figcaption>
                                 </figure>
@@ -625,7 +630,7 @@
                             <div class="gframe__lip">
                                 <figure class="gframe__mat">
                                     <div class="gframe__photo">
-                                        <img class="gframe__img" src="/gallery/photo6.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
+                                        <img class="gframe__img" src="gallery/photo6.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
                                     </div>
                                     <figcaption class="gframe__caption">#અખંડસૌભાગ્ય</figcaption>
                                 </figure>
@@ -650,7 +655,7 @@
                             <div class="gframe__lip">
                                 <figure class="gframe__mat">
                                     <div class="gframe__photo">
-                                        <img class="gframe__img" src="/gallery/photo7.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
+                                        <img class="gframe__img" src="gallery/photo7.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
                                     </div>
                                     <figcaption class="gframe__caption">#રૂડોઅવસર</figcaption>
                                 </figure>
@@ -675,7 +680,7 @@
                             <div class="gframe__lip">
                                 <figure class="gframe__mat">
                                     <div class="gframe__photo">
-                                        <img class="gframe__img" src="/gallery/photo8.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
+                                        <img class="gframe__img" src="gallery/photo8.webp" alt="" draggable="false" data-zoom="1" data-pos-x="50" data-pos-y="50">
                                     </div>
                                     <figcaption class="gframe__caption">#મંગલોત્સવ</figcaption>
                                 </figure>
@@ -1034,7 +1039,7 @@
             <div class="royale-outro__board">
                 <p class="royale-outro__shloka" aria-hidden="true">॥ અતિથિ દેવો ભવ ॥</p>
                 <p class="royale-outro__names">સમસ્ત પંચાણી પરિવાર</p>
-                <p class="royale-outro__line">આપની ઉપસ્થિતિ એ જ અમારું પરમ સૌભાગ્ય અને સન્માન છે</p>
+                <p class="royale-outro__line">આપની પધરામણી એ જ અમારું<br>પરમ સૌભાગ્ય અને સન્માન છે</p>
             </div>
         </div>
         <!-- The same torn band at the foot as at the head, so the closing
@@ -1111,7 +1116,7 @@
 
 
     <!-- The trial's saved draft, injected before the config reads it. -->
-    <script>if (location.search.indexOf('trial=1') !== -1) document.write('<scr' + 'ipt src="/try/royale/draft.js"></scr' + 'ipt>');</script>
+    <script>if (location.search.indexOf('trial=1') !== -1) document.write('<scr' + 'ipt src="try/royale/draft.js"></scr' + 'ipt>');</script>
 
     <!-- The invitation's own content, and what draws it. render.js runs
          before the animation scripts below so they start against the final
@@ -1119,7 +1124,7 @@
          frames it builds. -->
     <script src="config.js"></script>
     <script src="platform-adapter.js"></script>
-    <script src="/_platform/fit-text.js"></script>
+    <script src="_platform/fit-text.js"></script>
     <script src="render.js"></script>
 
     <script src="app.js"></script>
@@ -1132,22 +1137,22 @@
          Lenis for the page's own glide, all three shared from _platform (the
          same copies rose-invitation loads). scroll.js is the only thing that
          uses them, and it stands down without them. -->
-    <script src="/_platform/vendor/gsap.min.js"></script>
-    <script src="/_platform/vendor/ScrollTrigger.min.js"></script>
-    <script src="/_platform/vendor/lenis.min.js"></script>
+    <script src="_platform/vendor/gsap.min.js"></script>
+    <script src="_platform/vendor/ScrollTrigger.min.js"></script>
+    <script src="_platform/vendor/lenis.min.js"></script>
     <script src="scroll.js"></script>
     <script src="outro.js"></script>
 
     <!-- Shared platform chrome: the toolbar, the RSVP block, the editing
          mechanics editor.js builds on, and the background-music control. -->
-    <script src="/_platform/toolbar.js"></script>
+    <script src="_platform/toolbar.js"></script>
     <!-- EmailJS & Wedding Wishes & Blessings Handler -->
-    <script src="/_platform/vendor/email.min.js"></script>
+    <script src="_platform/vendor/email.min.js"></script>
     <script src="wishes.js"></script>
-    <script src="/_platform/date-display.js"></script>
-    <script src="/_platform/editor-kit.js"></script>
+    <script src="_platform/date-display.js"></script>
+    <script src="_platform/editor-kit.js"></script>
     <script src="editor.js"></script>
-    <script src="/_platform/music.js"></script>
+    <script src="_platform/music.js"></script>
     <script>if (window.BalconyMusic) window.BalconyMusic.mount(window.Royale);</script>
 </body>
 

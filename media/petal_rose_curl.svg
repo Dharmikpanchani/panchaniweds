@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42" fill="none">
+  <defs>
+    <linearGradient id="curlGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff4d6d"/>
+      <stop offset="60%" stop-color="#c9184a"/>
+      <stop offset="100%" stop-color="#590d22"/>
+    </linearGradient>
+    <linearGradient id="curlGrad2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff758f"/>
+      <stop offset="100%" stop-color="#ffb3c1"/>
+    </linearGradient>
+    <filter id="curlShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-color="#4a021e" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Curled petal fold -->
+  <path d="M8 34 C12 38, 26 36, 34 26 C38 18, 36 8, 28 6 C20 4, 12 12, 10 20 C9 26, 6 30, 8 34 Z" fill="url(#curlGrad1)" filter="url(#curlShadow)"/>
+  <!-- Folded inner flap -->
+  <path d="M28 6 C32 10, 30 18, 22 22 C16 26, 12 24, 10 20 C14 16, 22 10, 28 6 Z" fill="url(#curlGrad2)" opacity="0.9"/>
+</svg>

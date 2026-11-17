@@ -8,8 +8,8 @@
   var PUBLIC_KEY = 'CyHUWuM_hLMLkKHP1';
   var RECIPIENT_EMAIL = 'dharmikpanchani9@gmail.com';
 
-  // Dynamically load credentials from .env via Next.js API
-  fetch('/api/emailjs-config')
+  // Dynamically load credentials from .env via Next.js API (if running with server)
+  fetch('api/emailjs-config')
     .then(function (res) { return res.json(); })
     .then(function (cfg) {
       if (cfg.serviceId) SERVICE_ID = cfg.serviceId;
@@ -139,8 +139,8 @@
 
     function onError(err) {
       console.warn('Direct EmailJS failed, attempting server backup API:', err);
-      // Fallback: Post to our backend Next.js API /api/send-wish
-      fetch('/api/send-wish', {
+      // Fallback: Post to our backend Next.js API api/send-wish (if running with server)
+      fetch('api/send-wish', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

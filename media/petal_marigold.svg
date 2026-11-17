@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="44" viewBox="0 0 34 44" fill="none">
+  <defs>
+    <radialGradient id="goldPetalGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#fff3b0"/>
+      <stop offset="35%" stop-color="#ffb703"/>
+      <stop offset="75%" stop-color="#fb8500"/>
+      <stop offset="100%" stop-color="#d90429"/>
+    </radialGradient>
+    <filter id="goldShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-color="#803500" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Elongated curved marigold petal -->
+  <path d="M17 41 C9 35, 3 24, 5 13 C6 4, 13 1, 17 3 C21 1, 28 4, 29 13 C31 24, 25 35, 17 41 Z" fill="url(#goldPetalGrad)" filter="url(#goldShadow)"/>
+  <!-- Highlight ridge -->
+  <path d="M17 39 C16 26, 15 14, 17 5" stroke="#fff9db" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
+</svg>
