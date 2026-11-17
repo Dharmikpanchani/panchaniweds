@@ -3146,8 +3146,8 @@ body::before {
   }
 
   .royale-card__symbol {
-    width: clamp(50px, 12.5vw, 66px);
-    margin-bottom: 2px;
+    width: clamp(56px, 15vw, 76px);
+    margin-bottom: 4px;
   }
 
   .royale-card__mantra {
@@ -3179,10 +3179,11 @@ body::before {
   }
 
   .royale-card__cue {
-    margin-top: clamp(12px, 2.2vh, 18px);
-    width: clamp(215px, 68vw, 280px);
-    height: clamp(40px, 5.8vh, 46px);
-    font-size: clamp(12px, 3.2vw, 14px);
+    margin-top: clamp(14px, 2.4vh, 22px);
+    width: min(90%, 290px);
+    min-height: 48px;
+    padding: clamp(9px, 1.6vh, 13px) clamp(16px, 4vw, 24px);
+    font-size: clamp(13px, 3.6vw, 15.5px);
   }
 }
 
@@ -3248,15 +3249,22 @@ body::before {
 }
 
 .royale-card__symbol {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: none;
-  /* The symbol SVGs carry blank margin around the figure; 98u draws the
-     Ganesha itself ~80u tall, as in the design. */
   width: calc(98 * var(--u));
   aspect-ratio: 1 / 1;
-  background-color: currentColor;
-  -webkit-mask: url("../symbols/_ganesha.svg") center / contain no-repeat;
-  mask: url("../symbols/_ganesha.svg") center / contain no-repeat;
+  margin-inline: auto;
+}
+
+.royale-card__symbol-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 6px rgba(140, 90, 44, 0.28));
 }
 
 .royale-card__mantra,
@@ -3358,74 +3366,103 @@ body::before {
   position: relative;
 }
 
-/* The cover's tap cue, sized in --u like the rest of the card. */
+/* The cover's invitation opening button - Luxury Royal Wedding badge */
 .royale-card__cue {
-  --royale-cue-fill: #5a0723;
-  --royale-cue-edge: #d4af37;
-  --royale-cue-shine: #fff5d6;
-  width: clamp(240px, 74vw, 330px);
-  max-width: 330px;
-  min-width: 220px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: calc(22 * var(--u));
+  width: auto;
+  max-width: min(92%, 340px);
+  min-height: 50px;
+  padding: clamp(10px, 1.8vh, 14px) clamp(20px, 5vw, 30px);
   box-sizing: border-box;
-  aspect-ratio: 300 / 72;
-  margin-top: calc(26 * var(--u));
-  font-family: "Noto Serif Gujarati", "Tiro Devanagari Sanskrit", serif;
-  font-size: clamp(12.5px, 3.2vw, 16.5px);
+  background: linear-gradient(135deg, #7c0a2b 0%, #4a0217 50%, #6d0926 100%);
+  border: 2px solid #e2ba52;
+  border-radius: 999px;
+  outline: 1.5px solid rgba(255, 230, 145, 0.55);
+  outline-offset: -5px;
+  box-shadow: 
+    0 4px 18px rgba(65, 2, 24, 0.45),
+    0 0 20px rgba(212, 175, 55, 0.38),
+    inset 0 1px 2px rgba(255, 240, 190, 0.45),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.55);
+  font-family: "Noto Serif Gujarati", "Noto Sans Gujarati", "Tiro Devanagari Sanskrit", serif;
+  font-size: clamp(13.5px, 3.4vw, 16.5px);
   font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #fff9e6;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 12px rgba(255, 215, 0, 0.5);
-  filter: drop-shadow(0 6px 18px rgba(74, 2, 30, 0.48)) drop-shadow(0 0 18px rgba(212, 175, 55, 0.4));
+  letter-spacing: 0.03em;
+  color: #fffdf2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 12px rgba(255, 220, 110, 0.7);
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  border-radius: 999px;
   animation: ryCuePulse 2.8s ease-in-out infinite alternate;
-  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.22s ease;
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.22s ease, filter 0.22s ease;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.royale-card__cue .ry-plaque__frame {
+  display: none;
 }
 
 @keyframes ryCuePulse {
   0% {
     transform: translateY(0) scale(1);
-    filter: drop-shadow(0 6px 18px rgba(74, 2, 30, 0.48)) drop-shadow(0 0 14px rgba(212, 175, 55, 0.3));
+    box-shadow: 
+      0 4px 18px rgba(65, 2, 24, 0.45),
+      0 0 18px rgba(212, 175, 55, 0.35),
+      inset 0 1px 2px rgba(255, 240, 190, 0.45);
   }
   100% {
-    transform: translateY(-5px) scale(1.025);
-    filter: drop-shadow(0 10px 24px rgba(74, 2, 30, 0.6)) drop-shadow(0 0 26px rgba(255, 215, 0, 0.6));
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 
+      0 8px 24px rgba(65, 2, 24, 0.6),
+      0 0 28px rgba(255, 215, 0, 0.65),
+      inset 0 1px 3px rgba(255, 245, 205, 0.6);
   }
 }
 
 .royale-card__cue:hover {
-  transform: translateY(-6px) scale(1.04);
-  filter: drop-shadow(0 12px 28px rgba(74, 2, 30, 0.7)) drop-shadow(0 0 32px rgba(255, 215, 0, 0.75));
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 
+    0 10px 28px rgba(65, 2, 24, 0.7),
+    0 0 32px rgba(255, 215, 0, 0.75),
+    inset 0 1px 3px rgba(255, 245, 205, 0.7);
 }
 
+.royale-card__cue:active,
 .royale-card__cue.is-pressed {
   animation: none !important;
-  transform: translateY(2px) scale(0.97) !important;
-  filter: drop-shadow(0 2px 8px rgba(74, 2, 30, 0.6)) drop-shadow(0 0 36px rgba(255, 215, 0, 0.9)) !important;
+  transform: translateY(2px) scale(0.96) !important;
+  box-shadow: 
+    0 2px 8px rgba(65, 2, 24, 0.7),
+    0 0 36px rgba(255, 225, 95, 0.95),
+    inset 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+  border-color: #ffe082;
 }
 
 .royale-card__cue .ry-plaque__label {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(5px, 1.5vw, 10px);
-  padding: 0 clamp(6px, 1.8vw, 14px);
+  gap: clamp(6px, 1.8vw, 10px);
   z-index: 2;
   white-space: nowrap;
+  pointer-events: none;
 }
 
 .royale-card__cue .ry-cue-icon {
   color: #ffd700;
-  font-size: 0.9em;
-  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.85));
+  font-size: 1.1em;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.9));
   display: inline-block;
   animation: ryStarTwinkle 1.8s ease-in-out infinite alternate;
 }
 
 @keyframes ryStarTwinkle {
-  0% { transform: scale(0.85); opacity: 0.75; }
+  0% { transform: scale(0.85); opacity: 0.8; }
   100% { transform: scale(1.25); opacity: 1; filter: drop-shadow(0 0 8px #ffe58f); }
 }
 
@@ -4644,44 +4681,43 @@ body::before {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 5;
+  z-index: 30;
   pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   opacity: 0;
   transition: opacity 0.4s ease;
   will-change: transform, opacity;
 }
 
 .ry-gudiya__bubble {
-  position: relative;
-  margin-bottom: calc(4 * var(--u));
-  padding: calc(4 * var(--u)) calc(12 * var(--u));
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  padding: 5px 14px;
   background: #fffdf8;
   border: 1.5px solid #d4af37;
   border-radius: 999px;
-  box-shadow: 0 calc(4 * var(--u)) calc(12 * var(--u)) rgba(74, 2, 30, 0.25);
+  box-shadow: 0 4px 14px rgba(74, 2, 30, 0.3), 0 0 10px rgba(212, 175, 55, 0.25);
   animation: ryBubbleFloat 1.8s ease-in-out infinite alternate;
   white-space: nowrap;
+  pointer-events: none;
+  z-index: 35;
 }
 
 .ry-gudiya__bubble::after {
   content: "";
   position: absolute;
-  bottom: calc(-6 * var(--u));
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: -6px;
+  right: 28px;
   width: 0;
   height: 0;
-  border-left: calc(5 * var(--u)) solid transparent;
-  border-right: calc(5 * var(--u)) solid transparent;
-  border-top: calc(6 * var(--u)) solid #d4af37;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #d4af37;
 }
 
 .ry-gudiya__bubble-text {
   font-family: "Noto Sans Gujarati", sans-serif;
-  font-size: calc(12 * var(--u));
+  font-size: clamp(11.5px, 3.2vw, 13px);
   font-weight: 700;
   color: #5a0927;
   letter-spacing: 0.02em;
@@ -4689,7 +4725,7 @@ body::before {
 
 .ry-gudiya__character {
   position: relative;
-  width: clamp(84px, 18vw, 138px);
+  width: clamp(75px, 19vw, 115px);
   aspect-ratio: 692 / 1062;
   transform-origin: bottom center;
 }

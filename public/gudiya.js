@@ -20,6 +20,16 @@
   var opened = false;
   var animFrameId = null;
 
+  // Direct user tap on the button opens the gate immediately
+  cue.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (window.RoyaleGateOpen) {
+      window.RoyaleGateOpen();
+    } else if (gate) {
+      gate.click();
+    }
+  });
+
   // Gentle auspicious chime using Web Audio API (soft temple bells / golden harp chime)
   function playMagicalChime() {
     try {
@@ -108,7 +118,7 @@
     window.setTimeout(function () {
       gudiya.style.opacity = '0';
       window.setTimeout(function () { gudiya.hidden = true; }, 600);
-    }, 1200);
+    }, 1000);
   }
 
   document.addEventListener('royale:gate-open', onUserOpen);
@@ -118,37 +128,76 @@
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
-  function startWalkingSequence() {
-    if (opened || root.classList.contains('is-open')) return;
-
+  // Precise geometry calculation across all responsive screen sizes
+  function getPlacement() {
     var gateRect = gate.getBoundingClientRect();
     var cueRect = cue.getBoundingClientRect();
     var charRect = char.getBoundingClientRect();
 
-    var charW = charRect.width || 120;
-    var charH = charRect.height || 185;
+    var isMobile = window.innerWidth < 700;
+    var charW = charRect.width || (isMobile ? 78 : 110);
+    var charH = charRect.height || (charW * 1062 / 692);
 
-    // Position gudiya so she stands comfortably beside the button (to the right),
-    // and her outstretched finger touches the right tip of the button plaque.
-    // Her body will never cover the button or text!
-    var targetBtnX = (cueRect.right - gateRect.left) - 6;
-    var targetBtnY = (cueRect.top - gateRect.top) + (cueRect.height * 0.5);
+    // Button position relative to gate container
+    var btnRight = cueRect.right - gateRect.left;
+    var btnCenterY = (cueRect.top - gateRect.top) + (cueRect.height * 0.5);
 
-    // Her finger is at approx 4% from the left edge of charW and 41% from the top of charH
-    var endX = targetBtnX - (charW * 0.04);
-    var endY = targetBtnY - (charH * 0.41);
+    // The outstretched finger tip in media/gudiya_walking.webp is at:
+    // x = charW * 0.01 (1% from left edge of character)
+    // y = charH * 0.386 (38.6% down from top of character)
+    // We want her finger to tap the right rim of the button:
+    var targetTouchX = btnRight - 4;
+    var targetTouchY = btnCenterY;
 
-    // Starting point: gracefully entering from outside/near right edge of screen
-    var startX = Math.min(gateRect.width - charW * 0.2, endX + Math.max(gateRect.width * 0.38, 220));
-    var startY = endY + Math.min(gateRect.height * 0.06, 32);
+    // Place character so finger touches (targetTouchX, targetTouchY)
+    var endX = targetTouchX - (charW * 0.01);
+    var endY = targetTouchY - (charH * 0.386);
+
+    // Safety clamp: keep her 6px inside the right screen edge on narrow screens
+    var maxEndX = gateRect.width - charW - 6;
+    if (endX > maxEndX) {
+      endX = maxEndX;
+    }
+
+    // Actual sparkle burst coordinates on the button
+    var actualTouchX = Math.min(btnRight - 6, endX + (charW * 0.04));
+    var actualTouchY = btnCenterY;
+
+    // Start gracefully from the right edge
+    var startX = Math.min(gateRect.width + 10, endX + Math.max(gateRect.width * 0.35, 170));
+    var startY = endY + 12;
+
+    return {
+      startX: startX,
+      startY: startY,
+      endX: endX,
+      endY: endY,
+      touchX: actualTouchX,
+      touchY: actualTouchY,
+      charW: charW,
+      charH: charH,
+      gateW: gateRect.width,
+      gateH: gateRect.height
+    };
+  }
+
+  function startWalkingSequence() {
+    if (opened || root.classList.contains('is-open')) return;
+
+    var coords = getPlacement();
+    var startX = coords.startX;
+    var startY = coords.startY;
+    var endX = coords.endX;
+    var endY = coords.endY;
+    var charW = coords.charW;
+    var charH = coords.charH;
 
     gudiya.style.transform = 'translate(' + startX + 'px, ' + startY + 'px)';
     gudiya.style.opacity = '1';
     char.classList.add('is-walking');
-    if (bubbleText) bubbleText.textContent = 'ચાલો, પત્રિકા ખોલીએ! 🌸';
+    if (bubbleText) bubbleText.textContent = 'ચાલો, પત્રિકા ખોલીએ! ✨';
 
-    // Slower, graceful, and charming stroll (4200ms = 4.2 seconds)
-    var duration = 4200;
+    var duration = 3400; // 3.4 seconds graceful stroll
     var startTime = performance.now();
 
     function step(now) {
@@ -162,8 +211,8 @@
 
       gudiya.style.transform = 'translate(' + currX + 'px, ' + currY + 'px)';
 
-      // Emit footstep sparkle every ~260ms during slow stroll
-      if (now - lastSparkleTime > 260) {
+      // Emit footstep sparkle every ~240ms during stroll
+      if (now - lastSparkleTime > 240) {
         lastSparkleTime = now;
         spawnSparkle(currX + charW * 0.45, currY + charH * 0.95);
       }
@@ -171,7 +220,7 @@
       if (progress < 1) {
         animFrameId = requestAnimationFrame(step);
       } else {
-        onArrivedAtButton(targetBtnX, targetBtnY);
+        onArrivedAtButton(coords.touchX, coords.touchY);
       }
     }
 
@@ -181,14 +230,14 @@
   function onArrivedAtButton(targetX, targetY) {
     if (opened) return;
     char.classList.remove('is-walking');
-    if (bubbleText) bubbleText.textContent = 'અહીં ક્લિક કરીએ! ✨';
+    if (bubbleText) bubbleText.textContent = 'અહીં ક્લિક કરીએ! 👇';
 
-    // Graceful pause to admire and invite (~650ms)
+    // Graceful pause to admire and invite (450ms)
     window.setTimeout(function () {
       if (opened) return;
       char.classList.add('is-tapping');
 
-      // Exact touch moment (300ms into tap gesture)
+      // Exact touch moment (280ms into tap gesture)
       window.setTimeout(function () {
         if (opened) return;
         cue.classList.add('is-pressed');
@@ -216,16 +265,35 @@
           }, 1500);
         }, 420);
 
-      }, 300);
-    }, 650);
+      }, 280);
+    }, 450);
   }
 
-  // Start the lovely sequence 800ms after load
+  // Handle mobile screen orientation change or resize
+  window.addEventListener('resize', function () {
+    if (opened || !gudiya || gudiya.hidden) return;
+    if (!char.classList.contains('is-walking')) {
+      var coords = getPlacement();
+      gudiya.style.transform = 'translate(' + coords.endX + 'px, ' + coords.endY + 'px)';
+    }
+  });
+
+  // Start sequence once layout & fonts are ready
+  function initSequence() {
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        window.setTimeout(startWalkingSequence, 350);
+      }).catch(function () {
+        window.setTimeout(startWalkingSequence, 600);
+      });
+    } else {
+      window.setTimeout(startWalkingSequence, 600);
+    }
+  }
+
   if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', function () {
-      window.setTimeout(startWalkingSequence, 800);
-    });
+    window.addEventListener('DOMContentLoaded', initSequence);
   } else {
-    window.setTimeout(startWalkingSequence, 800);
+    initSequence();
   }
 })();
