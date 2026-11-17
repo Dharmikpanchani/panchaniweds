@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #fdf2e1;
+    color: var(--royale-ink);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("/media/motif_tile.svg");
+    background-size: var(--motif-tile);
+    background-repeat: repeat;
+    opacity: 0.18;
+  }
+
+  :focus-visible {
+    outline: 2px solid #7f1038;
+    outline-offset: 4px;
+  }
+}
+
+/* Base custom utility classes */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}

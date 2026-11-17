@@ -1,0 +1,21 @@
+{
+  "name": "Panchani Wedding | Royale Indian Wedding Invitation",
+  "short_name": "Panchani Wedding",
+  "description": "Official wedding invitation of Rahul Panchani & Aditi by Panchani Parivar.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdf2e1",
+  "theme_color": "#560f31",
+  "icons": [
+    {
+      "src": "/media/ganesha.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/media/elephant.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

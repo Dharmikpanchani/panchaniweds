@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="38" height="46" viewBox="0 0 38 46" fill="none">
+  <defs>
+    <radialGradient id="pinkPetalGrad" cx="30%" cy="25%" r="75%">
+      <stop offset="0%" stop-color="#fff0f3"/>
+      <stop offset="25%" stop-color="#ffb3c1"/>
+      <stop offset="65%" stop-color="#ff758f"/>
+      <stop offset="90%" stop-color="#c9184a"/>
+      <stop offset="100%" stop-color="#a4133c"/>
+    </radialGradient>
+    <filter id="pinkShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-color="#590d22" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <path d="M19 42 C10 36, 2 26, 3 14 C4 5, 13 2, 19 4 C25 2, 34 5, 35 14 C36 26, 28 36, 19 42 Z" fill="url(#pinkPetalGrad)" filter="url(#pinkShadow)"/>
+  <!-- Delicate curve shadow -->
+  <path d="M19 40 C14 30, 8 20, 11 10 C15 7, 21 8, 26 12 C28 22, 23 32, 19 40 Z" fill="#ffffff" opacity="0.25"/>
+</svg>

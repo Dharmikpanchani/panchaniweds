@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+      <defs>
+        <radialGradient id="soc_bg_location_pin.svg" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#560f31"/>
+          <stop offset="80%" stop-color="#3e0823"/>
+          <stop offset="100%" stop-color="#240212"/>
+        </radialGradient>
+      </defs>
+      <!-- Lotus Wreath Medallion -->
+      <circle cx="50" cy="50" r="46" fill="url(#soc_bg_location_pin.svg)" stroke="#feb669" stroke-width="3"/>
+      <circle cx="50" cy="50" r="41" fill="none" stroke="#feb669" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.6"/>
+      <!-- Lotus Petal Rim -->
+      <g stroke="#feb669" stroke-width="1.5" fill="none" opacity="0.5">
+        <circle cx="50" cy="5" r="3"/>
+        <circle cx="50" cy="95" r="3"/>
+        <circle cx="5" cy="50" r="3"/>
+        <circle cx="95" cy="50" r="3"/>
+      </g>
+      <!-- Icon Glyphs -->
+      <g transform="translate(50, 50)">
+        <path d="M0,-22 C-10,-22 -18,-14 -18,-4 C-18,10 0,22 0,22 C0,22 18,10 18,-4 C18,-14 10,-22 0,-22 Z" fill="#feb669"/>
+             <circle cx="0" cy="-6" r="6" fill="#4a021e"/>
+      </g>
+    </svg>
