@@ -334,7 +334,7 @@
 
     // Background music - the shared platform control (_platform/music.js)
     // reads and writes this.
-    music: { enabled: true, src: '', volume: 0.5 },
+    music: { enabled: true, src: 'media/music.mp3', volume: 0.5 },
   };
 
   // Arrays are replaced wholesale rather than merged index by index, so an

@@ -21,12 +21,8 @@
 window.BalconyMusic = (function () {
   // Ships with every template as the shared default - a host who never
   // touches the music setting still gets a working, on-theme track rather
-  // than silence. Absolute (not relative to the template folder) because
-  // it lives once under /templates/music/, not copied into each template.
-  // URL-encoded (the filename has a space) - encodeURI would be run on this
-  // every use otherwise, and a literal space in a src attribute is asking
-  // for a browser/environment to disagree on how to resolve it.
-  var DEFAULT_TRACK = '/templates/music/Jashn-e-bahara%20Instrumental.mp3';
+  // than silence.
+  var DEFAULT_TRACK = 'media/music.mp3';
 
   var ICON_ON =
     '<svg class="music-toggle__icon music-toggle__icon--on" viewBox="0 0 24 24" aria-hidden="true">' +
@@ -68,18 +64,14 @@ window.BalconyMusic = (function () {
     var cfg = (NS.config && NS.config.music) || {};
     if (cfg.enabled === false) return;
 
-    var src = (cfg.src || '').trim() || DEFAULT_TRACK;
+    var src = (cfg.src || '').trim();
+    if (!src || src.indexOf('templates/music') !== -1) {
+      src = DEFAULT_TRACK;
+    }
 
     var audio = new Audio();
     audio.loop = true;
-    // 'metadata', not 'auto': loading the whole track on every page view,
-    // including the majority of guests who never turn the music on, is
-    // exactly the cost this avoids. Audible autoplay is blocked until a
-    // gesture anyway, so nothing needs the audio data until the unlock below
-    // or the toggle calls play() - and that call starts the full fetch by
-    // itself. The header is enough to confirm the file is playable, which is
-    // all the button-reveal below waits for.
-    audio.preload = 'metadata';
+    audio.preload = 'auto';
     audio.volume = typeof cfg.volume === 'number' ? clamp01(cfg.volume) : 0.5;
     audio.src = src;
 
@@ -98,33 +90,36 @@ window.BalconyMusic = (function () {
     var wantsSound = !startMuted;
 
     function reflect() {
-      btn.classList.toggle('is-muted', !wantsSound);
-      btn.setAttribute('aria-pressed', String(!wantsSound));
-      btn.setAttribute('aria-label', wantsSound ? 'Mute music' : 'Play music');
-      btn.title = wantsSound ? 'Mute music' : 'Play music';
+      var isPlaying = !audio.paused && !audio.muted;
+      btn.classList.toggle('is-muted', !isPlaying);
+      btn.setAttribute('aria-pressed', String(isPlaying));
+      btn.setAttribute('aria-label', isPlaying ? 'સંગીત બંધ કરો' : 'સંગીત ચાલુ કરો');
+      btn.title = isPlaying ? 'સંગીત બંધ કરો' : 'સંગીત ચાલુ કરો';
     }
 
     function tryPlay() {
       if (!wantsSound) return;
       var p = audio.play();
-      if (p && typeof p.catch === 'function') {
-        p.catch(function () { /* blocked - a later gesture will retry */ });
+      if (p && typeof p.then === 'function') {
+        p.then(function () {
+          reflect();
+          disarmUnlock();
+        }).catch(function () { /* blocked - a later gesture will retry */ });
       }
     }
 
-    // Reveal the control only once the browser confirms it can play this
-    // file. Both events, because which one arrives depends on how much the
-    // browser decided to fetch: under preload='metadata' it parses the
-    // header and fires loadedmetadata, and may never buffer enough for
-    // canplay until something calls play(). Waiting on canplay alone would
-    // leave the toggle hidden for good.
-    function revealToggle() { btn.hidden = false; }
+    function revealToggle() { btn.hidden = false; reflect(); }
     audio.addEventListener('loadedmetadata', revealToggle, { once: true });
     audio.addEventListener('canplay', revealToggle, { once: true });
+    audio.addEventListener('play', function () {
+      reflect();
+      disarmUnlock();
+    });
+    audio.addEventListener('pause', function () {
+      reflect();
+    });
 
-    // A host's own uploaded track failing to load (moved, deleted, a format
-    // the browser can't play) shouldn't leave the guest with silence - fall
-    // back to the shared default once.
+    // Fall back to DEFAULT_TRACK if custom track fails
     audio.addEventListener('error', function () {
       if (audio.src.indexOf(DEFAULT_TRACK) === -1) {
         audio.src = DEFAULT_TRACK;
@@ -133,16 +128,27 @@ window.BalconyMusic = (function () {
       }
     });
 
-    tryPlay(); // first attempt - often blocked by the autoplay policy, that's expected
+    tryPlay(); // first attempt - if autoplay permitted, plays immediately
 
     // Unlock on the first genuine interaction anywhere except the button
     // itself (the button runs its own logic below).
-    var GESTURES = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
+    var GESTURES = ['pointerdown', 'touchstart', 'touchend', 'click', 'keydown'];
     function unlock(e) {
       if (e && e.target && btn.contains(e.target)) return;
-      if (wantsSound && audio.paused) tryPlay();
-      if (!audio.paused) disarmUnlock();
+      if (wantsSound && audio.paused) {
+        audio.muted = false;
+        tryPlay();
+      }
     }
+
+    // Also trigger immediately when the wedding gate opens
+    document.addEventListener('royale:gate-open', function () {
+      if (wantsSound && audio.paused) {
+        audio.muted = false;
+        tryPlay();
+      }
+    });
+
     // Symmetrical, because the page coming back from the background may need
     // to wait for a gesture all over again - re-adding the same listener for
     // the same event is a no-op, so arming twice is harmless.
@@ -155,9 +161,14 @@ window.BalconyMusic = (function () {
     armUnlock();
 
     btn.addEventListener('click', function () {
-      wantsSound = !wantsSound;
-      if (wantsSound) { audio.muted = false; tryPlay(); }
-      else { audio.pause(); }
+      if (audio.paused || audio.muted) {
+        wantsSound = true;
+        audio.muted = false;
+        tryPlay();
+      } else {
+        wantsSound = false;
+        audio.pause();
+      }
       reflect();
     });
 

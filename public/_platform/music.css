@@ -4,6 +4,10 @@
    template accent colour) since one file now serves papercut's purple/cream
    palette, rose-invitation's brown/rose palette, and the plain simple-card /
    simple-announcement cards alike. */
+.music-toggle[hidden] {
+  display: none !important;
+}
+
 .music-toggle {
   position: fixed;
   top: 16px;
