@@ -373,8 +373,8 @@
     const cfg = window.Royale.config;
     const bride = (cfg.brideName || '').trim();
     const groom = (cfg.groomName || '').trim();
-    cfg.title = [bride, groom].filter(Boolean).join(' & ');
-    cfg.hostNames = [bride, groom].filter(Boolean);
+    cfg.title = [groom, bride].filter(Boolean).join(' & ');
+    cfg.hostNames = [groom, bride].filter(Boolean);
   }
 
   function save() {

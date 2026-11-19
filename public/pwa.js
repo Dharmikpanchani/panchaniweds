@@ -2,18 +2,47 @@
 (function () {
   'use strict';
 
-  // 1. Register Service Worker
+  // 1. Service Worker Management (Dev bypass + production auto-purge)
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker
-        .register('./sw.js')
-        .then(function (reg) {
-          console.log('[PWA] Service Worker registered with scope:', reg.scope);
-        })
-        .catch(function (err) {
-          console.warn('[PWA] Service Worker registration failed:', err);
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      // Unregister any active service worker during local development and clear all caches so changes reflect instantly
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (var i = 0; i < registrations.length; i++) {
+          registrations[i].unregister();
+          console.log('[PWA Dev] Unregistered service worker:', registrations[i]);
+        }
+      });
+      if ('caches' in window) {
+        caches.keys().then(function (names) {
+          names.forEach(function (name) {
+            caches.delete(name);
+            console.log('[PWA Dev] Cleared cache:', name);
+          });
         });
-    });
+      }
+    } else {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker
+          .register('./sw.js')
+          .then(function (reg) {
+            console.log('[PWA] Service Worker registered with scope:', reg.scope);
+            reg.update();
+          })
+          .catch(function (err) {
+            console.warn('[PWA] Service Worker registration failed:', err);
+          });
+      });
+      if ('caches' in window) {
+        caches.keys().then(function (names) {
+          names.forEach(function (name) {
+            if (name !== 'panchani-wedding-v10') {
+              console.log('[PWA] Purging outdated cache:', name);
+              caches.delete(name);
+            }
+          });
+        });
+      }
+    }
   }
 
   // 2. Check if already running as installed standalone app
@@ -47,7 +76,7 @@
           '<img src="icon-192.png" alt="Panchani Wedding App" class="pwa-banner__icon">' +
         '</div>' +
         '<div class="pwa-banner__info">' +
-          '<strong class="pwa-banner__title">પાંચાણી રોયલ વેડિંગ એપ</strong>' +
+          '<strong class="pwa-banner__title">પાંચાણી પરિવાર વેડિંગ એપ</strong>' +
           '<p class="pwa-banner__desc">મોબાઈલમાં એપ ઇન્સ્ટોલ કરી સરળતાથી જુઓ</p>' +
         '</div>' +
         '<button type="button" class="pwa-banner__btn" id="pwaInstallBtn">' +

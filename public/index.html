@@ -96,7 +96,7 @@
          doors stand side by side and the card leaves upward; in landscape the
          doors are stacked and the card leaves to the right. -->
     <!-- Royal Wedding Background Audio (Native HTML5 element for 100% Android & iOS Safari support) -->
-    <audio id="ryBgMusic" preload="auto" loop playsinline webkit-playsinline>
+    <audio id="ryBgMusic" src="media/music.mp3" preload="auto" loop playsinline webkit-playsinline>
         <source src="media/music.mp3" type="audio/mpeg">
     </audio>
 
@@ -263,9 +263,9 @@
                  rather than leaving a keyboard user on a removed element. -->
             <div class="royale-couple__shloka" aria-hidden="true">॥ મંગલમ્ ભગવાન વિષ્ણુઃ, મંગલમ્ ગરુડધ્વજઃ । મંગલમ્ પુંડરીકાક્ષઃ, મંગલાય તનો હરિઃ ॥</div>
             <h1 class="royale-couple" id="ryCouple" tabindex="-1">
-                <span class="royale-couple__name" id="ryBrideName">કુ. નિશા</span>
-                <span class="royale-couple__amp">&amp;</span>
                 <span class="royale-couple__name" id="ryGroomName">ચિ. ધાર્મિક</span>
+                <span class="royale-couple__amp">&amp;</span>
+                <span class="royale-couple__name" id="ryBrideName">કુ. નિશા</span>
             </h1>
         </div>
 
@@ -1157,6 +1157,10 @@
     <script src="_platform/fit-text.js"></script>
     <script src="render.js"></script>
 
+    <!-- Shared background-music player - mounted early so window.RoyaleMusicStart is ready before app.js and gudiya.js run -->
+    <script src="_platform/music.js"></script>
+    <script>if (window.BalconyMusic) window.BalconyMusic.mount(window.Royale);</script>
+
     <script src="app.js"></script>
     <script src="gudiya.js"></script>
     <script src="date-reveal.js"></script>
@@ -1182,8 +1186,6 @@
     <script src="_platform/date-display.js"></script>
     <script src="_platform/editor-kit.js"></script>
     <script src="editor.js"></script>
-    <script src="_platform/music.js"></script>
-    <script>if (window.BalconyMusic) window.BalconyMusic.mount(window.Royale);</script>
     <!-- Progressive Web App Controller (Install Prompt & Offline Cache) -->
     <script src="pwa.js"></script>
 </body>

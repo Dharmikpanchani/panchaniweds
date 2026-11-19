@@ -1,5 +1,5 @@
 // Service Worker for Panchani Royal Wedding PWA
-const CACHE_NAME = 'panchani-wedding-v3';
+const CACHE_NAME = 'panchani-wedding-v10';
 const PRECACHE_ASSETS = [
   './',
   './index.html',
@@ -24,6 +24,7 @@ const PRECACHE_ASSETS = [
   './_platform/vendor/lenis.min.js',
   './_platform/vendor/email.min.js',
   './_platform/vendor/fonts/fonts.css',
+  './_platform/music.js',
   './_platform/music.css',
   './_platform/toolbar.css',
   './media/ganesha.svg',
@@ -32,12 +33,13 @@ const PRECACHE_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(PRECACHE_ASSETS).catch((err) => {
         console.warn('[SW Precache warning]', err);
       });
-    }).then(() => self.skipWaiting())
+    })
   );
 });
 
@@ -45,7 +47,12 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
-        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            console.log('[SW] Purging outdated cache:', key);
+            return caches.delete(key);
+          }
+        })
       );
     }).then(() => self.clients.claim())
   );
@@ -71,6 +78,25 @@ self.addEventListener('fetch', (event) => {
     url.pathname.endsWith('.ogg') ||
     event.request.headers.get('range')
   ) {
+    return;
+  }
+
+  // For localhost, navigation, HTML, CSS, and JS: ALWAYS fetch Network-First!
+  const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
+  const isCodeAsset = url.pathname.endsWith('.html') || url.pathname.endsWith('.js') || url.pathname.endsWith('.css') || url.pathname === '/' || url.pathname.endsWith('/');
+
+  if (isLocalhost || isCodeAsset) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
+    );
     return;
   }
 

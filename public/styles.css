@@ -1980,9 +1980,9 @@ body::before {
 
 .ryc-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   justify-items: center;
-  gap: clamp(28px, 5vw, 52px);
+  gap: clamp(8px, 2.5vw, 18px);
   width: 100%;
 }
 
@@ -2021,13 +2021,9 @@ body::before {
   }
 }
 
-/* A divider under each card, the grid's own gap standing above and below it. */
+/* Dividers: on mobile they are hidden so the 2-column grid flows cleanly */
 .ryc-divider {
-  display: block;
-  width: min(88%, 360px);
-  height: auto;
-  user-select: none;
-  -webkit-user-drag: none;
+  display: none !important;
 }
 
 @media (min-width: 900px) {
@@ -2036,7 +2032,7 @@ body::before {
   }
 
   .ryc-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     align-items: start;
     max-width: 1120px;
   }
@@ -2045,11 +2041,11 @@ body::before {
      Only the one after the third card stays, drawn right across between the
      two rows. */
   .ryc-divider {
-    display: none;
+    display: none !important;
   }
 
   .ryc-divider--row {
-    display: block;
+    display: block !important;
     grid-column: 1 / -1;
     justify-self: center;
     width: min(70%, 760px);
@@ -2075,66 +2071,6 @@ body::before {
    so the grid's gap is measured from the card itself, as in the design:
    9.5% of the width down to the divider, and the same again to the next
    card. The divider runs 81% of the width. */
-@media (max-width: 899px) {
-  .royale-ceremonies {
-    padding-inline: 0;
-    overflow-x: clip;
-  }
-
-  .ryc-title {
-    padding-inline: 24px;
-  }
-
-  .ryc-grid {
-    gap: min(9.5vw, 52px);
-  }
-
-  .ryc-card {
-    --card: min(90%, 480px);
-
-    width: calc(var(--card) * 447 / 369);
-    max-width: none;
-    margin:
-      calc(var(--card) * -35 / 369) calc((100% - var(--card) * 447 / 369) / 2) calc(var(--card) * -44 / 369);
-  }
-
-  .ryc-divider {
-    width: min(81%, 432px);
-  }
-}
-
-@media (max-width: 700px) {
-  .ryc-card {
-    --card: min(88%, 340px);
-  }
-
-  .ryc-card__art {
-    top: 11%;
-    width: clamp(54%, 60%, 64%);
-    height: clamp(38%, 42%, 45%);
-  }
-
-  .ryc-card__photo {
-    --photo-h: 40%;
-  }
-}
-
-@media (max-width: 400px) {
-  .ryc-card {
-    --card: min(86%, 310px);
-  }
-
-  .ryc-card__art {
-    top: 12%;
-    width: 56%;
-    height: 40%;
-  }
-
-  .ryc-card__photo {
-    --photo-h: 38%;
-  }
-}
-
 /* Landscape: the corner ornaments larger, and the heading lifted up between
    them rather than set below them - the top padding no longer has to clear
    the corners' height. 30% a corner leaves the middle 40% of the width for
@@ -2436,6 +2372,307 @@ body::before {
   }
 }
 
+/* ==========================================================================
+   Mobile & Tablet: 2-Column Side-by-Side Ceremonies Grid (below 900px)
+   ========================================================================== */
+@media (max-width: 899px) {
+  .royale-ceremonies {
+    --corner-w: clamp(40px, 14vw, 80px);
+    padding: clamp(24px, 5vw, 44px) clamp(8px, 2.5vw, 16px);
+    overflow-x: clip;
+  }
+
+  .ryc-title {
+    font-size: clamp(20px, 5.5vw, 30px);
+    margin: 0 0 clamp(12px, 3.5vw, 22px);
+    padding-inline: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .ryc-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: clamp(8px, 2.2vw, 14px) !important;
+    width: 100% !important;
+    max-width: 560px !important;
+    margin: 0 auto !important;
+    align-items: stretch !important;
+  }
+
+  /* Dividers between cards are hidden in 2-column mobile layout */
+  .ryc-divider {
+    display: none !important;
+  }
+
+  .ryc-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    aspect-ratio: 447 / 598;
+    position: relative;
+    container-type: inline-size;
+  }
+
+  /* Only center if truly an odd number of cards (e.g. 5 cards), using nth-of-type to ignore divider imgs */
+  .ryc-grid > .ryc-card:last-of-type:nth-of-type(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - clamp(4px, 1.2vw, 8px));
+    max-width: 250px;
+  }
+
+  .ryc-card:nth-child(even).is-armed.is-shown {
+    transition-delay: 80ms;
+  }
+
+  .ryc-card__inner {
+    position: absolute;
+    inset: 5.5% 10.5% 7%;
+    padding: 0 4px 6px;
+    gap: clamp(4px, 2.2cqw, 10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .ryc-card__artwell {
+    inset: 0;
+  }
+
+  .ryc-card__art {
+    top: 6.5%;
+    left: 50%;
+    width: 78%;
+    height: 47%;
+    transform: translateX(-50%);
+    object-fit: contain;
+  }
+
+  .ryc-card__photo {
+    --photo-h: 44%;
+  }
+
+  .ryc-card__name {
+    font-size: clamp(12.5px, 6.2cqw, 17px) !important;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--royale-ceremony-ink, #4a0d1e);
+    text-shadow: 0 0.5px 1px rgba(255, 255, 255, 0.9);
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ryc-card__foot {
+    gap: clamp(3px, 1.4cqw, 6px);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ryc-card__where {
+    gap: 4px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    display: flex;
+    padding: 0;
+  }
+
+  .ryc-card__venue {
+    font-size: clamp(9.8px, 4.8cqw, 14px) !important;
+    font-weight: 600;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    color: #551d2c;
+    max-width: calc(100% - 24px);
+    text-align: center;
+  }
+
+  .ryc-card__map {
+    width: clamp(20px, 9.8cqw, 26px);
+    height: clamp(20px, 9.8cqw, 26px);
+    min-width: 20px;
+    border-radius: 5px;
+    padding: 2.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fdf5e6;
+    border: 1px solid #d4af37;
+    flex-shrink: 0;
+  }
+
+  .ryc-card__divider {
+    height: 1px;
+    width: 88%;
+    margin: clamp(2px, 1cqw, 4px) auto;
+    background: linear-gradient(90deg, transparent, rgba(180, 140, 80, 0.6), transparent);
+  }
+
+  .ryc-card__when {
+    gap: 3px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+  }
+
+  .ryc-card__date-row,
+  .ryc-card__time-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ryc-card__date {
+    font-size: clamp(9.5px, 4.2cqw, 13px) !important;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.01em;
+    color: #4a1525;
+    text-align: center;
+  }
+
+  .ryc-card__time {
+    font-size: clamp(9px, 3.8cqw, 12px) !important;
+    padding: 2px clamp(6px, 2.5cqw, 10px);
+    border-radius: 999px;
+    white-space: nowrap;
+    line-height: 1.2;
+    background: #fcf1df;
+    border: 1px solid rgba(180, 140, 80, 0.5);
+    color: #7b1d36;
+    font-weight: 600;
+  }
+}
+
+/* Animated invite pulse on cue button when doll points to it */
+.royale-card__cue.is-inviting {
+  animation: ry-cue-invite-pulse 1.2s ease-in-out infinite alternate !important;
+}
+
+@keyframes ry-cue-invite-pulse {
+  from {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25), 0 0 6px rgba(212, 175, 55, 0.3);
+  }
+  to {
+    transform: scale(1.05);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35), 0 0 16px rgba(212, 175, 55, 0.8);
+  }
+}
+
+/* Floating Music Unmute Pill */
+.ry-music-pill {
+  position: fixed;
+  top: 16px;
+  right: 68px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(36, 6, 17, 0.94);
+  border: 1px solid rgba(212, 175, 55, 0.85);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4), 0 0 10px rgba(212, 175, 55, 0.4);
+  color: #f7e6c4;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  animation: ry-pill-pulse 1.8s ease-in-out infinite alternate;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ry-music-pill.is-fading {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.92);
+  pointer-events: none;
+}
+
+.music-toggle.is-playing {
+  animation: ry-music-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes ry-pill-pulse {
+  from {
+    transform: scale(1);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 6px rgba(212, 175, 55, 0.25);
+  }
+  to {
+    transform: scale(1.05);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45), 0 0 16px rgba(212, 175, 55, 0.6);
+  }
+}
+
+@keyframes ry-music-glow {
+  from {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  to {
+    box-shadow: 0 3px 18px rgba(212, 175, 55, 0.6);
+  }
+}
+
+@media (max-width: 360px) {
+  .royale-ceremonies {
+    padding-inline: 4px;
+  }
+
+  .ryc-grid {
+    gap: 6px;
+  }
+
+  .ryc-card__inner {
+    inset: 5.5% 10.5% 6%;
+    padding: 0 2px 4px;
+    gap: 2px;
+  }
+
+  .ryc-card__name {
+    font-size: 11px !important;
+    line-height: 1.15;
+  }
+
+  .ryc-card__venue {
+    font-size: 9.5px !important;
+  }
+
+  .ryc-card__map {
+    width: 18px;
+    height: 18px;
+  }
+
+  .ryc-card__date {
+    font-size: 9px !important;
+  }
+
+  .ryc-card__time {
+    font-size: 8.5px !important;
+    padding: 1.5px 5px;
+  }
+}
+
 /* --- closing picture -------------------------------------------------- */
 
 /* The last thing on the page: the garden the invitation opened on, seen
@@ -2483,19 +2720,23 @@ body::before {
 
 @media (max-width: 699px) {
   .royale-outro picture {
-    max-height: clamp(520px, 75vh, 660px);
+    min-height: clamp(560px, 82vh, 700px);
+    max-height: clamp(600px, 88vh, 740px);
     overflow: hidden;
   }
 
   .royale-outro__image {
-    max-height: clamp(520px, 75vh, 660px);
+    min-height: clamp(560px, 82vh, 700px);
+    max-height: clamp(600px, 88vh, 740px);
+    width: 100%;
     object-fit: cover;
     object-position: center bottom;
   }
 
   .royale-outro__easel {
-    max-height: clamp(500px, 73vh, 640px);
-    width: min(94vw, 420px);
+    min-height: clamp(540px, 80vh, 680px);
+    max-height: clamp(580px, 86vh, 720px);
+    width: min(98vw, 450px);
     left: 50%;
     transform: translateX(-50%);
     aspect-ratio: 940 / 1672;
@@ -2556,32 +2797,51 @@ body::before {
 
 @media (max-width: 699px) {
   .royale-outro__board {
-    top: 45%;
-    width: 54%;
+    top: 44.5%;
+    width: 43%;
+    max-width: 100%;
+    padding: 0 4px;
+    box-sizing: border-box;
+  }
+
+  .royale-outro__shloka {
+    font-size: clamp(11px, 3.2cqw, 14px) !important;
+    font-weight: 700;
+    color: #7f1038;
+    margin: 0 0 clamp(4px, 1.2cqw, 7px) !important;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
   }
 
   .royale-outro__names {
-    font-size: clamp(14.5px, 4.6cqw, 18.5px);
+    font-size: clamp(12.5px, 3.8cqw, 16px) !important;
     font-weight: 700;
-    white-space: nowrap;
-    margin-bottom: 0.45em;
+    white-space: normal;
+    text-wrap: balance;
+    word-break: keep-all;
+    line-height: 1.25;
+    margin-bottom: 0.35em;
     color: #5a0927;
   }
 
   .royale-outro__names::after {
     content: "✦";
     display: block;
-    font-size: 9px;
+    font-size: 10px;
     line-height: 1;
     color: #b8860b;
-    margin: 4px auto 6px;
-    opacity: 0.8;
+    margin: clamp(4px, 1.2cqw, 7px) auto;
+    opacity: 0.85;
   }
 
   .royale-outro__line {
-    font-size: clamp(11.5px, 3.6cqw, 14.5px);
-    line-height: 1.55;
+    font-size: clamp(10.5px, 3.1cqw, 13.5px) !important;
+    line-height: 1.5;
     color: #4a0217;
+    white-space: normal;
+    text-wrap: balance;
+    word-break: keep-all;
+    margin: 0 auto;
   }
 }
 
@@ -3804,7 +4064,7 @@ body::before {
    paper the row sits on. No ground of its own - the page's cream and its
    motif carry straight on from the note card above. */
 .royale-social {
-  padding: clamp(30px, 6vw, 52px) 20px;
+  padding: clamp(28px, 5vw, 44px) 20px clamp(48px, 9vw, 72px);
 }
 
 .socials {
@@ -4801,7 +5061,8 @@ body::before {
   top: 0;
   left: 0;
   z-index: 30;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
   opacity: 0;
   transition: opacity 0.4s ease;
   will-change: transform, opacity;

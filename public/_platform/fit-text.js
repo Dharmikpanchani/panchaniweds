@@ -55,6 +55,9 @@
     const one = oneLine(el);
     if (!avail || !one.h || one.w <= avail + 0.5) return;        // one line
 
+    // Don't shrink headings aggressively down to illegible sizes on mobile / 2-column cards
+    if (avail < 220) return;
+
     const lines = Math.round(el.offsetHeight / one.h);
     if (lines !== 2) return;                                     // too long
 

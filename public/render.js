@@ -113,8 +113,8 @@
 
   // ---- The couple's names on the hero ------------------------------------
   function renderNames() {
-    editable($('ryBrideName'), 'brideName', cfg.brideName, { placeholder: 'કન્યાનું નામ' });
     editable($('ryGroomName'), 'groomName', cfg.groomName, { placeholder: 'વરરાજાનું નામ' });
+    editable($('ryBrideName'), 'brideName', cfg.brideName, { placeholder: 'કન્યાનું નામ' });
   }
 
   // ---- The gate's card ---------------------------------------------------

@@ -103,12 +103,40 @@ window.BalconyMusic = (function () {
     function reflect() {
       var isPlaying = !audio.paused && !audio.muted;
       btn.classList.toggle('is-muted', !isPlaying);
+      btn.classList.toggle('is-playing', isPlaying);
       btn.setAttribute('aria-pressed', String(isPlaying));
       btn.setAttribute('aria-label', isPlaying ? 'સંગીત બંધ કરો' : 'સંગીત ચાલુ કરો');
       btn.title = isPlaying ? 'સંગીત બંધ કરો' : 'સંગીત ચાલુ કરો';
     }
 
-    // Global music starter (called synchronously on touch/click)
+    // Floating helpful music pill to prompt unmute if browser blocked unmuted sound
+    function showMusicPill() {
+      if (!audio.muted || (!audio.paused && !audio.muted)) return;
+      if (document.getElementById('ryMusicPill')) return;
+      var pill = document.createElement('div');
+      pill.id = 'ryMusicPill';
+      pill.className = 'ry-music-pill';
+      pill.innerHTML = '<span class="ry-music-pill__icon">🎵</span><span class="ry-music-pill__text">શુભ સંગીત શરૂ કરો</span>';
+      document.body.appendChild(pill);
+      pill.addEventListener('click', function (e) {
+        e.stopPropagation();
+        unlock();
+      });
+      pill.addEventListener('touchend', function (e) {
+        e.stopPropagation();
+        unlock();
+      }, { passive: true });
+    }
+
+    function hideMusicPill() {
+      var p = document.getElementById('ryMusicPill');
+      if (p) {
+        p.classList.add('is-fading');
+        setTimeout(function () { if (p && p.parentNode) p.parentNode.removeChild(p); }, 350);
+      }
+    }
+
+    // Global music starter (called on touch/click or doll button tap)
     window.RoyaleMusicStart = function () {
       if (!wantsSound) return;
       audio.muted = false;
@@ -116,9 +144,21 @@ window.BalconyMusic = (function () {
       if (p && typeof p.then === 'function') {
         p.then(function () {
           reflect();
-          disarmUnlock();
+          if (!audio.muted && !audio.paused) {
+            disarmUnlock();
+            hideMusicPill();
+          }
         }).catch(function (err) {
-          console.warn('[Music] user gesture play attempt:', err);
+          console.warn('[Music] Unmuted autoplay blocked by browser policy without gesture, playing muted until interaction:', err);
+          // If unmuted autoplay is blocked by browser policy, play muted so audio buffer is ready
+          audio.muted = true;
+          var pMuted = audio.play();
+          if (pMuted && typeof pMuted.then === 'function') {
+            pMuted.then(function () {
+              reflect();
+              showMusicPill();
+            }).catch(function () {});
+          }
         });
       }
     };
@@ -129,7 +169,10 @@ window.BalconyMusic = (function () {
     audio.addEventListener('canplay', revealToggle, { once: true });
     audio.addEventListener('play', function () {
       reflect();
-      disarmUnlock();
+      if (!audio.muted && !audio.paused) {
+        disarmUnlock();
+        hideMusicPill();
+      }
     });
     audio.addEventListener('pause', function () {
       reflect();
@@ -144,23 +187,49 @@ window.BalconyMusic = (function () {
       }
     });
 
-    // First attempt on load (supported on desktop, blocked by default on mobile)
+    // First attempt on load (supported on desktop, blocked by default on mobile without gesture)
     if (window.RoyaleMusicStart) window.RoyaleMusicStart();
 
-    // Unlock synchronously on the first user interaction across entire page
-    var GESTURES = ['touchstart', 'touchend', 'click', 'keydown'];
+    // Unlock synchronously on the first user interaction anywhere
+    var GESTURES = ['touchstart', 'touchend', 'pointerdown', 'pointerup', 'mousedown', 'mouseup', 'click', 'keydown'];
     function unlock(e) {
       if (e && e.target && btn && btn.contains(e.target)) return;
-      if (window.RoyaleMusicStart) window.RoyaleMusicStart();
+      wantsSound = true;
+      audio.muted = false;
+      var p = audio.play();
+      if (p && typeof p.then === 'function') {
+        p.then(function () {
+          reflect();
+          if (!audio.muted && !audio.paused) {
+            disarmUnlock();
+            hideMusicPill();
+          }
+        }).catch(function (err) {
+          console.warn('[Music] unlock attempt:', err);
+        });
+      } else {
+        reflect();
+        if (!audio.muted && !audio.paused) {
+          disarmUnlock();
+          hideMusicPill();
+        }
+      }
     }
 
     // Also trigger immediately when the wedding gate opens
     document.addEventListener('royale:gate-open', function () {
       if (window.RoyaleMusicStart) window.RoyaleMusicStart();
+      if (audio.muted || audio.paused) {
+        showMusicPill();
+      }
     });
 
     function armUnlock() {
       GESTURES.forEach(function (t) {
+        window.addEventListener(t, unlock, { capture: true, passive: true });
+        document.addEventListener(t, unlock, { capture: true, passive: true });
+      });
+      ['scroll', 'wheel', 'touchmove'].forEach(function (t) {
         window.addEventListener(t, unlock, { capture: true, passive: true });
       });
       var coverBtn = document.getElementById('ryCoverBtn');
@@ -175,10 +244,26 @@ window.BalconyMusic = (function () {
           gate.addEventListener(t, unlock, { capture: true, passive: true });
         });
       }
+      var gudiya = document.getElementById('ryGudiya');
+      if (gudiya) {
+        GESTURES.forEach(function (t) {
+          gudiya.addEventListener(t, unlock, { capture: true, passive: true });
+        });
+      }
+      var cue = document.querySelector('.royale-card__cue');
+      if (cue) {
+        GESTURES.forEach(function (t) {
+          cue.addEventListener(t, unlock, { capture: true, passive: true });
+        });
+      }
     }
 
     function disarmUnlock() {
       GESTURES.forEach(function (t) {
+        window.removeEventListener(t, unlock, { capture: true });
+        document.removeEventListener(t, unlock, { capture: true });
+      });
+      ['scroll', 'wheel', 'touchmove'].forEach(function (t) {
         window.removeEventListener(t, unlock, { capture: true });
       });
     }
@@ -194,6 +279,7 @@ window.BalconyMusic = (function () {
           p.then(function () {
             reflect();
             disarmUnlock();
+            hideMusicPill();
           }).catch(function (err) {
             console.warn('[Music] button click error:', err);
           });

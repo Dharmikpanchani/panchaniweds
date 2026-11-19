@@ -20,15 +20,32 @@
   var opened = false;
   var animFrameId = null;
 
-  // Direct user tap on the button opens the gate immediately
-  cue.addEventListener('click', function (e) {
-    e.stopPropagation();
+  // Direct user tap on the button opens the gate immediately and starts music
+  function handleDirectOpen(e) {
+    if (e) e.stopPropagation();
+    if (window.RoyaleMusicStart) {
+      try { window.RoyaleMusicStart(); } catch (_) {}
+    }
     if (window.RoyaleGateOpen) {
       window.RoyaleGateOpen();
     } else if (gate) {
       gate.click();
     }
-  });
+  }
+
+  cue.addEventListener('click', handleDirectOpen);
+  cue.addEventListener('touchend', function () {
+    if (window.RoyaleMusicStart) {
+      try { window.RoyaleMusicStart(); } catch (_) {}
+    }
+  }, { passive: true });
+
+  gudiya.addEventListener('click', handleDirectOpen);
+  gudiya.addEventListener('touchend', function () {
+    if (window.RoyaleMusicStart) {
+      try { window.RoyaleMusicStart(); } catch (_) {}
+    }
+  }, { passive: true });
 
   // Gentle auspicious chime using Web Audio API (soft temple bells / golden harp chime)
   function playMagicalChime() {
@@ -230,9 +247,10 @@
   function onArrivedAtButton(targetX, targetY) {
     if (opened) return;
     char.classList.remove('is-walking');
-    if (bubbleText) bubbleText.textContent = 'અહીં ક્લિક કરીએ! 👇';
+    if (bubbleText) bubbleText.textContent = 'સંગીત સાથે પત્રિકા ખોલો! 🎵👇';
+    cue.classList.add('is-inviting');
 
-    // Graceful pause to admire and invite (450ms)
+    // Graceful pause to admire and invite user to touch (700ms)
     window.setTimeout(function () {
       if (opened) return;
       char.classList.add('is-tapping');
@@ -243,6 +261,20 @@
         cue.classList.add('is-pressed');
         spawnTapBurst(targetX, targetY);
         playMagicalChime();
+
+        // Auto-start royal background music immediately when the doll clicks the button
+        if (window.RoyaleMusicStart) {
+          try { window.RoyaleMusicStart(); } catch (_) {}
+        } else {
+          var bgAudio = document.getElementById('ryBgMusic');
+          if (bgAudio) {
+            try {
+              bgAudio.muted = false;
+              var p = bgAudio.play();
+              if (p && p.catch) p.catch(function () {});
+            } catch (_) {}
+          }
+        }
 
         // 420ms after tap, celebrate and open!
         window.setTimeout(function () {
@@ -266,7 +298,7 @@
         }, 420);
 
       }, 280);
-    }, 450);
+    }, 700);
   }
 
   // Handle mobile screen orientation change or resize
