@@ -34,11 +34,11 @@ const tiroDevanagari = Tiro_Devanagari_Sanskrit({
 export const metadata: Metadata = {
   metadataBase: new URL("https://panchani-wedding.vercel.app"),
   title: {
-    default: "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક & કુ. નિશા | પાંચાણી પરિવાર",
+    default: "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક & ચિ. નિશા | પાંચાણી પરિવાર",
     template: "%s | પાંચાણી પરિવાર",
   },
   description:
-    "॥ શ્રી ગણેશાય નમઃ ॥ અમારા આંગણે રૂડા અવસરના વધામણાં છે. ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭ ના શુભ પ્રસંગે અમારા સુપુત્ર ચિ. ધાર્મિક તથા કુ. નિશા ના શુભ વિવાહ નિમિત્તે આપશ્રીને સહપરિવાર પધારવા અમારું હાર્દિક નિમંત્રણ છે. • પાંચાણી પરિવાર",
+    "॥ શ્રી ગણેશાય નમઃ ॥ અમારા આંગણે રૂડા અવસરના વધામણાં છે. ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭ ના શુભ પ્રસંગે અમારા સુપુત્ર ચિ. ધાર્મિક તથા ચિ. નિશા ના શુભ લગ્ન નિમિત્તે આપશ્રીને સહપરિવાર પધારવા અમારું હાર્દિક નિમંત્રણ છે. • પાંચાણી પરિવાર",
   keywords: [
     "ધાર્મિક નિશા લગ્ન",
     "પાંચાણી પરિવાર",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     "Panchani Parivar",
     "Panchani Family",
     "Dharmik Panchani",
-    "Nisha Patel",
+    "Nisha Babariya",
     "Panchani Lagna",
     "Panchani Lagna Patrika",
     "Gujarati Wedding Invitation",
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક & કુ. નિશા | પાંચાણી પરિવાર",
+    title: "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક & ચિ. નિશા | પાંચાણી પરિવાર",
     description:
       "॥ શ્રી ગણેશાય નમઃ ॥ ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭ ના શુભ અવસરે આપશ્રીને સહપરિવાર પધારવા અમારું હાર્દિક અને ભાવભર્યું નિમંત્રણ છે. • પાંચાણી પરિવાર",
     url: "https://panchani-wedding.vercel.app",
@@ -99,7 +99,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક & કુ. નિશા | પાંચાણી પરિવાર",
+    title: "॥ શુભ લગ્ન નિમંત્રણ ॥ ચિ. ધાર્મિક & ચિ. નિશા | પાંચાણી પરિવાર",
     description:
       "શ્રી ગણેશાય નમઃ । અમારા આંગણે રૂડા અવસરના વધામણાં છે. ૨૮ અને ૨૯ જાન્યુઆરી ૨૦૨૭ - પાંચાણી પરિવાર.",
     images: ["/media/mandap_dusk.webp"],

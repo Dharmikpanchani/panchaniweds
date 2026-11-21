@@ -647,6 +647,148 @@ body::before {
   }
 }
 
+/* Closing groups & subheadings inside scrolls */
+.royale-closing-group {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.royale-scroll__sublead {
+  margin: -8px 0 6px;
+  font-family: "Noto Serif Gujarati", serif;
+  font-size: clamp(13px, 2.2cqw, 16px);
+  color: #ffd978;
+  letter-spacing: 0.5px;
+}
+
+.royale-elders-footnote {
+  margin: 14px 0 4px;
+  font-family: "Noto Serif Gujarati", serif;
+  font-size: clamp(13px, 2.3cqw, 16.5px);
+  font-weight: 600;
+  color: #ffd978;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.royale-group-title {
+  margin: 6px 0 4px;
+  font-family: "Noto Serif Gujarati", serif;
+  font-size: clamp(15px, 2.5cqw, 18px);
+  font-weight: 600;
+  color: #ffd978;
+  letter-spacing: 0.5px;
+}
+
+.royale-family-flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+  width: 100%;
+}
+
+.royale-tahuko__poem {
+  margin: 4px 0 10px;
+  font-family: "Noto Serif Gujarati", serif;
+  font-size: clamp(12.5px, 2.1cqw, 15px);
+  line-height: 1.6;
+  color: #fcebc2;
+  text-align: center;
+  font-style: italic;
+  max-width: 480px;
+}
+
+.royale-tahuko__names {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px 8px;
+  font-family: "Noto Serif Gujarati", serif;
+  font-size: clamp(13px, 2.3cqw, 16px);
+  font-weight: 600;
+  color: #ffd978;
+}
+
+.ry-tahuko-dot {
+  color: #d4af37;
+  opacity: 0.7;
+}
+
+.royale-nimantrak-group {
+  margin-top: 4px;
+}
+
+.royale-nimantrak__host {
+  margin: 0;
+  font-family: "Noto Serif Gujarati", serif;
+  font-size: clamp(15px, 2.6cqw, 19px);
+  font-weight: 700;
+  color: #fcebc2;
+}
+
+.royale-nimantrak__co {
+  margin: 2px 0;
+  font-family: "Noto Serif Gujarati", serif;
+  font-size: clamp(12.5px, 2.1cqw, 15px);
+  color: #f5dfb8;
+}
+
+.royale-nimantrak__addr {
+  margin: 4px 0 10px;
+  font-family: "Noto Serif Gujarati", serif;
+  font-size: clamp(12px, 2cqw, 14.5px);
+  color: #e5cb9b;
+  max-width: 440px;
+  line-height: 1.4;
+}
+
+.royale-nimantrak__phones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.ry-phone-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(212, 175, 55, 0.16);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: 20px;
+  padding: 6px 14px;
+  color: #fff3db;
+  text-decoration: none;
+  font-family: "Noto Serif Gujarati", serif;
+  font-size: clamp(12.5px, 2.1cqw, 15px);
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.ry-phone-btn:hover,
+.ry-phone-btn:focus-visible {
+  background: rgba(212, 175, 55, 0.32);
+  border-color: #ffd978;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.royale-scroll__residence {
+  margin: -4px 0 4px;
+  font-family: "Noto Serif Gujarati", serif;
+  font-size: clamp(12px, 2cqw, 14px);
+  color: #f5dfb8;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
 /* Papercut steps the compliment lines at 700px, not 560: a 26px line like
    "Shri Suresh Sharma & Family (Chacha-Chachi)" would wrap three times on a
    phone. The note steps with them here, though papercut's stays at 26px -
@@ -748,6 +890,10 @@ body::before {
    roll. The window's top edge travels too, but only ever by the overshoots,
    at most 0.35 of a roll, which the top roll (half a roll deep over the
    sheet's top edge) covers. */
+.royale-scroll.is-armed:not(.is-unrolled) {
+  cursor: pointer;
+}
+
 .royale-scroll.is-armed .royale-scroll__window,
 .royale-scroll.is-armed .royale-scroll__roller {
   transform: translateY(calc(-100% + var(--roll-h)));

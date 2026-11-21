@@ -129,8 +129,8 @@
     }
 
     const mantra = $('ryInvocation');
-    if (mantra && !mantra.innerHTML.includes('વક્રતુંડ')) {
-      mantra.innerHTML = '॥ શ્રી ગણેશાય નમઃ ॥<br><span class="royale-card__shloka">વક્રતુંડ મહાકાય સૂર્યકોટિ સમપ્રભ । નિર્વિઘ્નં કુરુ મે દેવ સર્વકાર્યેષુ સર્વદા ॥</span>';
+    if (mantra) {
+      mantra.innerHTML = '॥ શ્રી ગણેશાય નમઃ ॥<br><span class="royale-card__shloka">કુળદેવી શ્રી ખોડિયાર માતાજી તથા શ્રી નાગજી બાપાની અસીમ કૃપાથી</span>';
     }
 
     // One button opens the tradition/script/symbol picker (editor.js).
@@ -180,6 +180,7 @@
     editable($(p + 'GrandLabel'), path + '.grandLabel', family.grandLabel, { placeholder: 'સંબંધ (દા.ત. પૌત્ર)' });
     editable($(p + 'GrandA'), path + '.grandA', family.grandA, { placeholder: "દાદાનું નામ" });
     editable($(p + 'GrandB'), path + '.grandB', family.grandB, { placeholder: "દાદીનું નામ" });
+    editable($(p + 'Residence'), path + '.residence', family.residence, { placeholder: "સરનામું / રહેઠાણ" });
   }
 
   function renderFamilies() {
@@ -522,8 +523,10 @@
             ? '<span class="ry-cere-field ry-cere-field--time"><input type="time" data-edit-input="ceremonies.' + i + '.time" value="' + esc(c.time) + '" title="Time (optional)">' +
               '<button type="button" class="ry-cere-time-x" data-action="ceremony-time-remove" data-index="' + i + '" title="Remove the time" aria-label="Remove the time">&times;</button></span>'
             : '<span class="ry-cere-field ry-cere-field--time"><button type="button" class="ry-cere-time-add" data-action="ceremony-time-add" data-index="' + i + '">+ Add time</button></span>')
-        : '<div class="ryc-card__date-row"><span class="ryc-card__date">' + esc(RY.fmtDate(c.date)) + '</span></div>' +
-          (RY.fmtTime(c.time) ? '<div class="ryc-card__time-row"><span class="ryc-card__time">' + esc(RY.fmtTime(c.time)) + '</span></div>' : '')) +
+        : '<div class="ryc-card__date-row"><span class="ryc-card__date">' + esc(RY.fmtDate(c.date, c.tithi)) + '</span></div>' +
+          (c.timeLabel
+            ? '<div class="ryc-card__time-row"><span class="ryc-card__time">' + esc(c.timeLabel) + '</span></div>'
+            : (RY.fmtTime(c.time) ? '<div class="ryc-card__time-row"><span class="ryc-card__time">' + esc(RY.fmtTime(c.time)) + '</span></div>' : ''))) +
       '</div>' +
       '</div></div></article>';
 
@@ -599,41 +602,19 @@
     if (window.BalconyFitText) window.BalconyFitText.fit('.ryc-card__name');
   }
 
-  // ---- The compliments and the note --------------------------------------
+  // ---- The compliments (લિ. સ્નેહાધીન) -----------------------------------
   function renderCompliments() {
     const card = $('ryComplimentCard');
     if (!applyCardState('compliments', cfg.compliments, card)) return;
 
-    editable($('ryComplimentLead'), 'compliments.lead', cfg.compliments.lead, { placeholder: 'દર્શનાભિલાષી અને સ્નેહાધીન:' });
+    editable($('ryComplimentLead'), 'compliments.lead', cfg.compliments.lead, { placeholder: '॥ લિ. સ્નેહાધીન ॥' });
+    const sublead = $('ryComplimentSublead');
+    if (sublead && cfg.compliments.sublead) sublead.textContent = cfg.compliments.sublead;
 
-    const box = $('ryComplimentLines');
-    if (!box) return;
-    const lines = Array.isArray(cfg.compliments.lines) ? cfg.compliments.lines : [];
-    const live = edit ? lines : lines.filter((l) => (l || '').trim());
-    box.innerHTML = live.map((line, i) => (
-      '<p class="royale-scroll__line">' +
-      '<span' + ed('compliments.lines.' + i, { placeholder: 'Family name' }) + '>' + esc(line || '') + '</span>' +
-      (edit && RY.canEdit('compliments.lines')
-        ? '<button type="button" class="ry-line-x" data-action="compliment-line-remove" data-index="' + i + '" aria-label="Remove line">✕</button>'
-        : '') +
-      '</p>'
-    )).join('');
-
-    if (edit && RY.canEdit('compliments.lines') && !card.querySelector('.ry-line-add')) {
-      box.insertAdjacentHTML('afterend',
-        '<button type="button" class="ry-line-add" data-action="compliment-line-add">+ Add a line</button>');
-    }
-  }
-
-  function renderNote() {
-    const card = $('ryNoteCard');
-    if (!applyCardState('note', cfg.note, card)) return;
-    editable($('ryNoteLead'), 'note.lead', cfg.note.lead, { placeholder: 'કૌટુંબિક સ્નેહીજનો' });
-
-    const leftBox = $('ryFamilyLeft');
-    const rightBox = $('ryFamilyRight');
-    const leftNames = (cfg.note && cfg.note.familyLeft) || [];
-    const rightNames = (cfg.note && cfg.note.familyRight) || [];
+    const leftBox = $('ryEldersLeft');
+    const rightBox = $('ryEldersRight');
+    const leftNames = (cfg.compliments && cfg.compliments.familyLeft) || [];
+    const rightNames = (cfg.compliments && cfg.compliments.familyRight) || [];
 
     if (leftBox && leftNames.length) {
       leftBox.innerHTML = leftNames.map(function (n) { return '<p class="royale-family-item">' + esc(n) + '</p>'; }).join('');
@@ -641,6 +622,101 @@
     if (rightBox && rightNames.length) {
       rightBox.innerHTML = rightNames.map(function (n) { return '<p class="royale-family-item">' + esc(n) + '</p>'; }).join('');
     }
+
+    const footBox = $('ryComplimentFoot');
+    if (footBox && cfg.compliments && cfg.compliments.footNote) {
+      footBox.textContent = cfg.compliments.footNote;
+    }
+  }
+
+  // ---- The note (દર્શનાભિલાષી, ભાણેજ, મોસાળ) -----------------------------------
+  function renderNote() {
+    const card = $('ryNoteCard');
+    if (!applyCardState('note', cfg.note, card)) return;
+    editable($('ryNoteLead'), 'note.lead', cfg.note.lead, { placeholder: '॥ દર્શનાભિલાષી અને સ્નેહીજનો ॥' });
+
+    const darshBox = $('ryDarshanabhilashiGrid');
+    const darshNames = (cfg.note && cfg.note.darshanabhilashi) || [];
+    if (darshBox && darshNames.length) {
+      const col1 = darshNames.slice(0, 5);
+      const col2 = darshNames.slice(5);
+      darshBox.innerHTML =
+        '<div class="royale-family-col">' + col1.map(function (n) { return '<p class="royale-family-item">' + esc(n) + '</p>'; }).join('') + '</div>' +
+        '<div class="royale-family-col">' + col2.map(function (n) { return '<p class="royale-family-item">' + esc(n) + '</p>'; }).join('') + '</div>';
+    }
+
+    const bhanejBox = $('ryBhanejGrid');
+    const bhanejNames = (cfg.note && cfg.note.bhanej) || [];
+    if (bhanejBox && bhanejNames.length) {
+      const bCol1 = bhanejNames.slice(0, 3);
+      const bCol2 = bhanejNames.slice(3);
+      bhanejBox.innerHTML =
+        '<div class="royale-family-col">' + bCol1.map(function (n) { return '<p class="royale-family-item">' + esc(n) + '</p>'; }).join('') + '</div>' +
+        '<div class="royale-family-col">' + bCol2.map(function (n) { return '<p class="royale-family-item">' + esc(n) + '</p>'; }).join('') + '</div>';
+    }
+
+    const mosalBox = $('ryMosalGrid');
+    const mosalNames = (cfg.note && cfg.note.mosal) || [];
+    if (mosalBox && mosalNames.length) {
+      mosalBox.innerHTML = mosalNames.map(function (n) { return '<p class="royale-family-item">' + esc(n) + '</p>'; }).join('');
+    }
+  }
+
+  // ---- The Tahuko and Nimantrak card -------------------------------------
+  function renderTahuko() {
+    const card = $('ryTahukoCard');
+    if (!card) return;
+    const t = cfg.tahukoCard;
+    if (!t) return;
+
+    const leadEl = $('ryTahukoLead');
+    if (leadEl && t.tahukoLead) leadEl.textContent = t.tahukoLead;
+
+    const poemEl = $('ryTahukoPoem');
+    if (poemEl && t.tahukoPoem) poemEl.innerHTML = RY.nl2br(t.tahukoPoem);
+
+    const namesEl = $('ryTahukoNames');
+    if (namesEl && t.tahukoNames) {
+      namesEl.innerHTML = t.tahukoNames.map(function (n) { return '<span class="ry-tahuko-name">' + esc(n) + '</span>'; }).join('<span class="ry-tahuko-dot"> • </span>');
+    }
+
+    const hostEl = $('ryNimantrakHost');
+    if (hostEl && t.nimantrakHost) hostEl.textContent = t.nimantrakHost;
+
+    const coEl = $('ryNimantrakCo');
+    if (coEl && t.nimantrakCo) coEl.textContent = t.nimantrakCo;
+
+    const addrEl = $('ryNimantrakAddress');
+    if (addrEl && t.nimantrakAddress) addrEl.textContent = t.nimantrakAddress;
+
+    const phonesEl = $('ryNimantrakPhones');
+    if (phonesEl && t.nimantrakPhones) {
+      phonesEl.innerHTML = t.nimantrakPhones.map(function (p) {
+        const raw = p.replace(/[^0-9]/g, '');
+        return '<a href="tel:' + raw + '" class="ry-phone-btn"><span class="ry-phone-icon">📞</span> ' + esc(p) + '</a>';
+      }).join('');
+    }
+
+    const sthalHostEl = $('ryShubhLagnaHost');
+    if (sthalHostEl && t.shubhLagnaSthalHost) sthalHostEl.textContent = t.shubhLagnaSthalHost;
+
+    const sthalEl = $('ryShubhLagnaSthal');
+    if (sthalEl && t.shubhLagnaSthal) sthalEl.textContent = t.shubhLagnaSthal;
+
+    const mapBtn = $('ryShubhLagnaMapBtn');
+    if (mapBtn && t.shubhLagnaMapUrl) mapBtn.href = t.shubhLagnaMapUrl;
+
+    const eaGreeting = $('ryEAamantranGreeting');
+    if (eaGreeting && t.eAamantranGreeting) eaGreeting.textContent = t.eAamantranGreeting;
+
+    const eaNote = $('ryEAamantranNote');
+    if (eaNote && t.eAamantranNote) eaNote.textContent = t.eAamantranNote;
+
+    const eaOk = $('ryEAamantranOk');
+    if (eaOk && t.eAamantranOk) eaOk.textContent = t.eAamantranOk;
+
+    const eaFamily = $('ryEAamantranFamily');
+    if (eaFamily && t.eAamantranFamily) eaFamily.textContent = t.eAamantranFamily;
   }
 
   // ---- The closing board -------------------------------------------------
@@ -712,6 +788,7 @@
     renderCeremonies();
     renderCompliments();
     renderNote();
+    renderTahuko();
     renderSocial();
     renderFarewell();
   }
@@ -730,6 +807,7 @@
     ceremonies: renderCeremonies,
     compliments: renderCompliments,
     note: renderNote,
+    tahuko: renderTahuko,
     social: renderSocial,
     farewell: renderFarewell,
   };

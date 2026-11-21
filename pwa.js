@@ -35,7 +35,7 @@
       if ('caches' in window) {
         caches.keys().then(function (names) {
           names.forEach(function (name) {
-            if (name !== 'panchani-wedding-v13') {
+            if (name !== 'panchani-wedding-v22') {
               console.log('[PWA] Purging outdated cache:', name);
               caches.delete(name);
             }

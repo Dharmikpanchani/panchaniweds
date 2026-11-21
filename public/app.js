@@ -236,25 +236,46 @@
     });
   }, { rootMargin: '200% 0px' });
 
-  // A third of a card on screen: the closed rolls sit at the top of the space
-  // the card reserves, so by then they are well in view before they drop.
+  function unrollCard(scroll) {
+    if (!scroll || scroll.classList.contains('is-unrolled')) return;
+    try { observer.unobserve(scroll); } catch (e) {}
+    wake(scroll);
+    noLongerThan(ready(scroll), 800).then(function () {
+      scroll.classList.add('is-unrolled');
+    });
+  }
+
+  // Unroll scrolls smoothly as soon as they near the viewport (or on click / scroll fallback)
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (!entry.isIntersecting) return;
-      var scroll = entry.target;
-      observer.unobserve(scroll);
-      wake(scroll);   // in case it came into view faster than the early pass
-      noLongerThan(ready(scroll), 2500).then(function () {
-        scroll.classList.add('is-unrolled');
-      });
+      unrollCard(entry.target);
     });
-  }, { threshold: 0.35 });
+  }, { threshold: [0, 0.05, 0.1], rootMargin: '120px 0px 80px 0px' });
 
   Array.prototype.forEach.call(scrolls, function (scroll) {
     scroll.classList.add('is-armed');
     early.observe(scroll);
     observer.observe(scroll);
+    // Tap or click to open immediately if closed
+    scroll.addEventListener('click', function () {
+      unrollCard(scroll);
+    });
   });
+
+  // Fallback observer for tall scrolls and mobile in-app browsers
+  function checkScrollsInView() {
+    Array.prototype.forEach.call(scrolls, function (scroll) {
+      if (scroll.classList.contains('is-unrolled')) return;
+      var rect = scroll.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.9 && rect.bottom >= 0) {
+        unrollCard(scroll);
+      }
+    });
+  }
+  window.addEventListener('scroll', checkScrollsInView, { passive: true });
+  window.addEventListener('resize', checkScrollsInView, { passive: true });
+  window.setTimeout(checkScrollsInView, 1000);
 })();
 
 // Royale - the ceremony cards.

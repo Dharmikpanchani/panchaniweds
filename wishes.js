@@ -82,7 +82,7 @@
       name: name,
       from_name: name,
       user_name: name,
-      to_name: 'ચિ. ધાર્મિક અને કુ. નિશા (પાંચાણી પરિવાર)',
+      to_name: 'ચિ. ધાર્મિક અને ચિ. નિશા (પાંચાણી પરિવાર)',
       to_email: RECIPIENT_EMAIL,
       recipient_email: RECIPIENT_EMAIL,
       email: RECIPIENT_EMAIL,
@@ -99,7 +99,7 @@
       subject: 'શુભ લગ્ન શુભેચ્છા અને આશીર્વાદ સંદેશ (ધાર્મિક & નિશા)',
       title: 'પાંચાણી પરિવાર શુભ વિવાહ - આશીર્વાદ સંદેશ',
       address: 'પાંચાણી પરિવાર રોયલ વેડિંગ (Panchani Royal Wedding)',
-      event: 'ચિ. ધાર્મિક અને કુ. નિશા શુભ વિવાહ પ્રસંગ'
+      event: 'ચિ. ધાર્મિક અને ચિ. નિશા શુભ વિવાહ પ્રસંગ'
     };
 
     function onSuccess() {
