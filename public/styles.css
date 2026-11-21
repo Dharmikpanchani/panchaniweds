@@ -2479,7 +2479,7 @@ body::before {
   }
 
   .ryc-card__where {
-    gap: 4px;
+    gap: 3px;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -2488,15 +2488,16 @@ body::before {
   }
 
   .ryc-card__venue {
-    font-size: clamp(9.8px, 4.8cqw, 14px) !important;
+    font-size: clamp(8.2px, 4.2cqw, 13px) !important;
     font-weight: 600;
-    line-height: 1.25;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0;
     color: #551d2c;
-    max-width: calc(100% - 24px);
+    max-width: calc(100% - 22px);
     text-align: center;
   }
 
@@ -2655,7 +2656,8 @@ body::before {
   }
 
   .ryc-card__venue {
-    font-size: 9.5px !important;
+    font-size: 8.2px !important;
+    letter-spacing: -0.02em;
   }
 
   .ryc-card__map {
@@ -2798,45 +2800,45 @@ body::before {
 @media (max-width: 699px) {
   .royale-outro__board {
     top: 44.5%;
-    width: 43%;
+    width: 46%;
     max-width: 100%;
     padding: 0 4px;
     box-sizing: border-box;
   }
 
   .royale-outro__shloka {
-    font-size: clamp(11px, 3.2cqw, 14px) !important;
+    font-size: clamp(10px, 2.8cqw, 13px) !important;
     font-weight: 700;
     color: #7f1038;
-    margin: 0 0 clamp(4px, 1.2cqw, 7px) !important;
+    margin: 0 0 clamp(2px, 0.8cqw, 5px) !important;
     letter-spacing: 0.04em;
     white-space: nowrap;
   }
 
   .royale-outro__names {
-    font-size: clamp(12.5px, 3.8cqw, 16px) !important;
+    font-size: clamp(11.5px, 3.4cqw, 15px) !important;
     font-weight: 700;
     white-space: normal;
     text-wrap: balance;
     word-break: keep-all;
     line-height: 1.25;
-    margin-bottom: 0.35em;
+    margin-bottom: 0.2em;
     color: #5a0927;
   }
 
   .royale-outro__names::after {
     content: "✦";
     display: block;
-    font-size: 10px;
+    font-size: 9px;
     line-height: 1;
     color: #b8860b;
-    margin: clamp(4px, 1.2cqw, 7px) auto;
+    margin: clamp(2px, 0.8cqw, 5px) auto;
     opacity: 0.85;
   }
 
   .royale-outro__line {
-    font-size: clamp(10.5px, 3.1cqw, 13.5px) !important;
-    line-height: 1.5;
+    font-size: clamp(8px, 2.15cqw, 10.5px) !important;
+    line-height: 1.4;
     color: #4a0217;
     white-space: normal;
     text-wrap: balance;
@@ -2847,18 +2849,19 @@ body::before {
 
 @media (min-width: 700px) {
   .royale-outro__board {
-    top: 39.5%;
-    width: 31%;
+    top: 40%;
+    width: 33%;
   }
 
   /* Down by the same 31/38 the board itself came in, so the writing keeps
      its measure on the narrower panel. */
   .royale-outro__names {
-    font-size: 2.8cqw;
+    font-size: clamp(14px, 1.8cqw, 22px);
   }
 
   .royale-outro__line {
-    font-size: 2cqw;
+    font-size: clamp(10.5px, 1.05cqw, 14px);
+    line-height: 1.45;
   }
 }
 
@@ -4064,7 +4067,9 @@ body::before {
    paper the row sits on. No ground of its own - the page's cream and its
    motif carry straight on from the note card above. */
 .royale-social {
-  padding: clamp(28px, 5vw, 44px) 20px clamp(48px, 9vw, 72px);
+  display: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .socials {

@@ -272,12 +272,12 @@
     // template folder; the dates are absolute (the editor re-spaces them when
     // the wedding date moves).
     ceremonies: [
-      { name: 'શુભ સગાઈ સમારોહ', art: 'media/ring_ceremony.webp', date: '2027-01-28', time: '10:00', venue: 'પાંચાણી નિવાસ', mapUrl: '', enabled: true },
-      { name: 'રૂડી મહેંદી રસમ', art: 'media/mehendi.webp', date: '2027-01-28', time: '14:00', venue: 'પાંચાણી નિવાસ', mapUrl: '', enabled: true },
-      { name: 'માંગલિક પીઠી રસમ', art: 'media/haldi.webp', date: '2027-01-28', time: '16:30', venue: 'પાંચાણી નિવાસ', mapUrl: '', enabled: true },
-      { name: 'ભવ્ય સંગીત સંધ્યા', art: 'media/sangeet.webp', date: '2027-01-28', time: '19:30', venue: 'ધ ગ્રાન્ડ પેલેસ', mapUrl: '', enabled: true },
-      { name: 'શુભ લગ્ન વિધિ (હસ્તમેળાપ)', art: 'media/vivaah.webp', date: '2027-01-29', time: '10:30', venue: 'ધ ગ્રાન્ડ પેલેસ', mapUrl: '', enabled: true },
-      { name: 'સ્નેહમિલન તથા પ્રીતિભોજન', art: 'media/reception.webp', date: '2027-01-29', time: '19:00', venue: 'ધ ગ્રાન્ડ પેલેસ', mapUrl: '', enabled: true },
+      { name: 'શુભ સગાઈ સમારોહ', art: 'media/ring_ceremony.webp', date: '2027-01-28', time: '10:00', venue: 'સ્થળ: અમારું નિવાસ સ્થાન', mapUrl: '', enabled: true },
+      { name: 'રૂડી મહેંદી રસમ', art: 'media/mehendi.webp', date: '2027-01-28', time: '14:00', venue: 'સ્થળ: અમારું નિવાસ સ્થાન', mapUrl: '', enabled: true },
+      { name: 'માંગલિક પીઠી રસમ', art: 'media/haldi.webp', date: '2027-01-28', time: '16:30', venue: 'સ્થળ: અમારું નિવાસ સ્થાન', mapUrl: '', enabled: true },
+      { name: 'ભવ્ય સંગીત સંધ્યા', art: 'media/sangeet.webp', date: '2027-01-28', time: '19:30', venue: 'સ્થળ: અમારું નિવાસ સ્થાન', mapUrl: '', enabled: true },
+      { name: 'શુભ લગ્ન વિધિ (હસ્તમેળાપ)', art: 'media/vivaah.webp', date: '2027-01-29', time: '10:30', venue: 'સ્થળ: અમારું નિવાસ સ્થાન', mapUrl: '', enabled: true },
+      { name: 'સ્નેહમિલન તથા પ્રીતિભોજન', art: 'media/reception.webp', date: '2027-01-29', time: '19:00', venue: 'સ્થળ: અમારું નિવાસ સ્થાન', mapUrl: '', enabled: true },
     ],
 
     compliments: {
@@ -323,7 +323,7 @@
 
     // The board on the easel that closes the invitation. The guest's name
     // above it is not config - it comes from ?to= per invite.
-    farewell: { line: 'આપની પધરામણી એ જ અમારું પરમ સૌભાગ્ય અને સન્માન છે' },
+    farewell: { line: 'હૃદયના ધબકારે, આશાના અજવાળે, લાગણીના તારથી, શ્રદ્ધાના કિરણોથી, ઉત્સવના સાથિયા પૂર્યા છે. શુભ સગાઇપ્રસંગ માં નવયુગલ ને આપના શુભ આશિષ આપવા પધારશોજી.' },
 
     // The media row at the foot: Instagram, ceremony locations, add-to-
     // calendar (social.js). Only Instagram is stored, because it is the only
