@@ -30,7 +30,7 @@
       if ('caches' in window) {
         caches.keys().then(function (names) {
           names.forEach(function (name) {
-            if (name !== 'panchani-wedding-v40') {
+            if (name !== 'panchani-wedding-v46') {
               caches.delete(name);
             }
           });

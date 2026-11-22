@@ -189,7 +189,7 @@
    * their own three are what load.
    */
   const GALLERY_STARTERS = [
-    { type: 'portrait', image: 'gallery/photo1.jpeg', placeholder: false, caption: '#શુભારંભ', hang: 118 },
+    { type: 'portrait', image: 'gallery/photo1.webp', placeholder: false, caption: '#શુભારંભ', hang: 118 },
     { type: 'landscape', image: 'gallery/photo2.webp', placeholder: false, caption: '#મીઠીયાદો', hang: 150 },
     { type: 'story', text: 'કેટલીક વાર્તાઓ ભવ્ય શરૂઆતથી શરૂ થાય છે, પણ અમારી પ્રેમ કહાની એક સહજ અને મીઠી વાતચીતથી શરૂ થઈ હતી.', hang: 86 },
     { type: 'portrait', image: 'gallery/photo3.webp', placeholder: false, caption: '#પ્રેમસફર', hang: 132 },
@@ -280,7 +280,7 @@
       { name: 'મંડપ મુહૂર્ત', art: 'media/ring_ceremony.webp', date: '2027-01-28', time: '07:00', timeLabel: 'સવારે ૦૭:૦૦ કલાકે', tithi: 'પોષ વદ ૭ ને ગુરૂવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન, રસનાળ', mapUrl: 'https://www.google.com/maps/search/?api=1&query=21.828735,71.482394', enabled: true },
       { name: 'સ્વરૂચિ ભોજન', art: 'media/reception.webp', date: '2027-01-28', time: '11:00', timeLabel: 'બપોરે ૧૧:૦૦ કલાકે', tithi: 'પોષ વદ ૭ ને ગુરૂવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન, રસનાળ', mapUrl: 'https://www.google.com/maps/search/?api=1&query=21.828735,71.482394', enabled: true },
       { name: 'દાંડીયા રાસ', art: 'media/sangeet.webp', date: '2027-01-28', time: '21:00', timeLabel: 'રાત્રે ૦૯:૦૦ કલાકે', tithi: 'પોષ વદ ૭ ને ગુરૂવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન, રસનાળ', mapUrl: 'https://www.google.com/maps/search/?api=1&query=21.828735,71.482394', enabled: true },
-      { name: 'જાન પ્રસ્થાન', art: 'media/ceremony_ring.webp', date: '2027-01-29', time: '08:00', timeLabel: 'સવારે શેડુભાર મુકામે પ્રસ્થાન કરશે', tithi: 'પોષ વદ ૮ ને શુક્રવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન થી શેડુભાર', mapUrl: 'https://www.google.com/maps/search/?api=1&query=21.828735,71.482394', enabled: true },
+      { name: 'જાન પ્રસ્થાન', art: 'media/ceremony_ring.webp', date: '2027-01-29', time: '08:00', timeLabel: 'સવારે શેડુભાર મુકામે પ્રસ્થાન કરશે', tithi: 'પોષ વદ ૮ ને શુક્રવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન થી શેડુભાર', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Shedubhar', enabled: true },
       { name: 'શુભ લગ્ન વિધિ (હસ્તમેળાપ)', art: 'media/vivaah.webp', date: '2027-01-29', time: '12:05', timeLabel: 'બપોરે ૧૨:૦૫ કલાકે', tithi: 'પોષ વદ ૮ ને શુક્રવાર', venue: 'લગ્ન સ્થળ: શેડુભાર', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Shedubhar', enabled: true },
     ],
 

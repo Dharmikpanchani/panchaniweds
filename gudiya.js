@@ -115,14 +115,14 @@
     s.className = 'ry-gudiya-sparkle';
     var glyphs = ['✨', '🌸', '✦', '⋆', '💫', '🌸'];
     s.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
-    s.style.left = x + 'px';
-    s.style.top = y + 'px';
-    s.style.setProperty('--dx', (Math.random() * 26 - 13) + 'px');
-    s.style.setProperty('--dy', (-14 - Math.random() * 20) + 'px');
+    s.style.left = x.toFixed(1) + 'px';
+    s.style.top = y.toFixed(1) + 'px';
+    s.style.setProperty('--dx', (Math.random() * 20 - 10).toFixed(1) + 'px');
+    s.style.setProperty('--dy', (-12 - Math.random() * 16).toFixed(1) + 'px');
     gate.appendChild(s);
     window.setTimeout(function () {
       if (s.parentNode) s.parentNode.removeChild(s);
-    }, 950);
+    }, 750);
   }
 
   // Golden burst & rose petals when the finger taps the button
@@ -243,7 +243,7 @@
     var charW = coords.charW;
     var charH = coords.charH;
 
-    gudiya.style.transform = 'translate(' + startX + 'px, ' + startY + 'px)';
+    gudiya.style.transform = 'translate3d(' + startX.toFixed(1) + 'px, ' + startY.toFixed(1) + 'px, 0)';
     gudiya.style.opacity = '1';
     char.classList.add('is-walking');
     if (bubbleText) bubbleText.textContent = 'ચાલો, પત્રિકા ખોલીએ! ✨';
@@ -260,10 +260,11 @@
       var currX = startX + (endX - startX) * eased;
       var currY = startY + (endY - startY) * eased;
 
-      gudiya.style.transform = 'translate(' + currX + 'px, ' + currY + 'px)';
+      gudiya.style.transform = 'translate3d(' + currX.toFixed(1) + 'px, ' + currY.toFixed(1) + 'px, 0)';
 
-      // Emit footstep sparkle every ~240ms during stroll
-      if (now - lastSparkleTime > 240) {
+      // Emit footstep sparkle smoothly (throttled on mobile for 60fps fluidity)
+      var sparkleInterval = window.innerWidth < 700 ? 360 : 240;
+      if (now - lastSparkleTime > sparkleInterval) {
         lastSparkleTime = now;
         spawnSparkle(currX + charW * 0.45, currY + charH * 0.95);
       }
@@ -291,7 +292,7 @@
     if (opened || !gudiya || gudiya.hidden) return;
     if (!char.classList.contains('is-walking')) {
       var coords = getPlacement();
-      gudiya.style.transform = 'translate(' + coords.endX + 'px, ' + coords.endY + 'px)';
+      gudiya.style.transform = 'translate3d(' + coords.endX.toFixed(1) + 'px, ' + coords.endY.toFixed(1) + 'px, 0)';
     }
   });
 
