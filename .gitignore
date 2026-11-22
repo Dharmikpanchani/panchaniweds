@@ -28,7 +28,10 @@ yarn-error.log*
 
 # local env files
 .env*.local
-# .env
+# firebase service account & private credentials
+config/firebase-service-account.json
+wishes_log/fcm_tokens.json
+.env
 .env.production
 .env.development
 

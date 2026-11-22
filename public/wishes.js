@@ -139,7 +139,6 @@
     }
 
     function onError(err) {
-      console.warn('Direct EmailJS failed, attempting server backup API:', err);
       // Fallback: Post to our backend Next.js API api/send-wish (if running with server)
       fetch('api/send-wish', {
         method: 'POST',
@@ -158,8 +157,7 @@
             throw new Error(data.error || 'Failed to send');
           }
         })
-        .catch(function (serverErr) {
-          console.error('All send methods failed:', serverErr);
+        .catch(function () {
           btn.disabled = false;
           if (btnText) btnText.textContent = 'શુભેચ્છા અને આશીર્વાદ મોકલો ✦';
           alert('માફ કરશો, સંદેશ મોકલવામાં સમસ્યા આવી. કૃપા કરીને થોડીવાર પછી ફરી પ્રયાસ કરો.');

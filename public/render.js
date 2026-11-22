@@ -130,7 +130,7 @@
 
     const mantra = $('ryInvocation');
     if (mantra) {
-      mantra.innerHTML = '॥ શ્રી ગણેશાય નમઃ ॥<br><span class="royale-card__shloka">કુળદેવી શ્રી ખોડિયાર માતાજી તથા શ્રી નાગજી બાપાની અસીમ કૃપાથી</span>';
+      mantra.innerHTML = '॥ શ્રી ગણેશાય નમઃ ॥<br><span class="royale-card__shloka">કુળદેવી શ્રી મોમાઈ માતાજીની અસીમ કૃપાથી</span>';
     }
 
     // One button opens the tradition/script/symbol picker (editor.js).
@@ -684,15 +684,33 @@
     if (hostEl && t.nimantrakHost) hostEl.textContent = t.nimantrakHost;
 
     const coEl = $('ryNimantrakCo');
-    if (coEl && t.nimantrakCo) coEl.textContent = t.nimantrakCo;
+    if (coEl) {
+      if (t.nimantrakCo) {
+        coEl.textContent = t.nimantrakCo;
+        coEl.hidden = false;
+        coEl.style.display = '';
+      } else {
+        coEl.textContent = '';
+        coEl.hidden = true;
+        coEl.style.display = 'none';
+      }
+    }
 
     const addrEl = $('ryNimantrakAddress');
     if (addrEl && t.nimantrakAddress) addrEl.textContent = t.nimantrakAddress;
 
+    const nimMapBtn = $('ryNimantrakMapBtn');
+    if (nimMapBtn && t.nimantrakMapUrl) nimMapBtn.href = t.nimantrakMapUrl;
+
     const phonesEl = $('ryNimantrakPhones');
     if (phonesEl && t.nimantrakPhones) {
+      const gujToEn = { '૦':'0','૧':'1','૨':'2','૩':'3','૪':'4','૫':'5','૬':'6','૭':'7','૮':'8','૯':'9' };
       phonesEl.innerHTML = t.nimantrakPhones.map(function (p) {
-        const raw = p.replace(/[^0-9]/g, '');
+        let raw = '';
+        for (let ch of p) {
+          if (gujToEn[ch]) raw += gujToEn[ch];
+          else if (ch >= '0' && ch <= '9') raw += ch;
+        }
         return '<a href="tel:' + raw + '" class="ry-phone-btn"><span class="ry-phone-icon">📞</span> ' + esc(p) + '</a>';
       }).join('');
     }

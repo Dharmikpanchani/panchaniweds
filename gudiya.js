@@ -22,15 +22,49 @@
 
   // Direct user tap on the button opens the gate immediately and starts music
   function handleDirectOpen(e) {
-    if (e) e.stopPropagation();
+    if (e) {
+      try { e.stopPropagation(); } catch (_) {}
+    }
+    if (opened) return;
+    opened = true;
+    if (animFrameId) cancelAnimationFrame(animFrameId);
+
+    // Immediate tactile press & magical celebratory burst
+    cue.classList.add('is-pressed');
+    var coords = getPlacement();
+    spawnTapBurst(coords.touchX, coords.touchY);
+    playMagicalChime();
+
+    char.classList.remove('is-walking', 'is-tapping');
+    char.classList.add('is-celebrating');
+    if (bubbleText) bubbleText.textContent = 'શુભાગમન! પધારો! 🙏✨';
+
+    // Start background music
     if (window.RoyaleMusicStart) {
       try { window.RoyaleMusicStart(); } catch (_) {}
+    } else {
+      var bgAudio = document.getElementById('ryBgMusic');
+      if (bgAudio) {
+        try {
+          bgAudio.muted = false;
+          var p = bgAudio.play();
+          if (p && p.catch) p.catch(function () {});
+        } catch (_) {}
+      }
     }
+
+    // Open gate
     if (window.RoyaleGateOpen) {
       window.RoyaleGateOpen();
     } else if (gate) {
       gate.click();
     }
+
+    // Smoothly fade out character after doors open
+    window.setTimeout(function () {
+      gudiya.style.opacity = '0';
+      window.setTimeout(function () { gudiya.hidden = true; }, 700);
+    }, 1500);
   }
 
   cue.addEventListener('click', handleDirectOpen);
@@ -249,56 +283,7 @@
     char.classList.remove('is-walking');
     if (bubbleText) bubbleText.textContent = 'સંગીત સાથે પત્રિકા ખોલો! 🎵👇';
     cue.classList.add('is-inviting');
-
-    // Graceful pause to admire and invite user to touch (700ms)
-    window.setTimeout(function () {
-      if (opened) return;
-      char.classList.add('is-tapping');
-
-      // Exact touch moment (280ms into tap gesture)
-      window.setTimeout(function () {
-        if (opened) return;
-        cue.classList.add('is-pressed');
-        spawnTapBurst(targetX, targetY);
-        playMagicalChime();
-
-        // Auto-start royal background music immediately when the doll clicks the button
-        if (window.RoyaleMusicStart) {
-          try { window.RoyaleMusicStart(); } catch (_) {}
-        } else {
-          var bgAudio = document.getElementById('ryBgMusic');
-          if (bgAudio) {
-            try {
-              bgAudio.muted = false;
-              var p = bgAudio.play();
-              if (p && p.catch) p.catch(function () {});
-            } catch (_) {}
-          }
-        }
-
-        // 420ms after tap, celebrate and open!
-        window.setTimeout(function () {
-          if (opened) return;
-          char.classList.remove('is-tapping');
-          char.classList.add('is-celebrating');
-          if (bubbleText) bubbleText.textContent = 'શુભાગમન! પધારો! 🙏✨';
-
-          // Trigger the gate opening
-          if (window.RoyaleGateOpen) {
-            window.RoyaleGateOpen();
-          } else {
-            gate.click();
-          }
-
-          // Smoothly fade out character after doors open
-          window.setTimeout(function () {
-            gudiya.style.opacity = '0';
-            window.setTimeout(function () { gudiya.hidden = true; }, 700);
-          }, 1500);
-        }, 420);
-
-      }, 280);
-    }, 700);
+    // Waiting for the guest to tap "શુભ નિમંત્રણ પત્રિકા ખોલો" - NO automatic opening!
   }
 
   // Handle mobile screen orientation change or resize

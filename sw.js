@@ -1,5 +1,5 @@
 // Service Worker for Panchani Royal Wedding PWA
-const CACHE_NAME = 'panchani-wedding-v22';
+const CACHE_NAME = 'panchani-wedding-v40';
 const PRECACHE_ASSETS = [
   './',
   './index.html',
@@ -17,6 +17,7 @@ const PRECACHE_ASSETS = [
   './wishes.js',
   './gudiya.js',
   './outro.js',
+  './notifications.js',
   './scroll.js',
   './platform-adapter.js',
   './_platform/vendor/gsap.min.js',
@@ -36,9 +37,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(PRECACHE_ASSETS).catch((err) => {
-        console.warn('[SW Precache warning]', err);
-      });
+      return cache.addAll(PRECACHE_ASSETS).catch(() => {});
     })
   );
 });
@@ -49,7 +48,6 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
-            console.log('[SW] Purging outdated cache:', key);
             return caches.delete(key);
           }
         })
@@ -131,6 +129,49 @@ self.addEventListener('fetch', (event) => {
           return caches.match('./index.html');
         }
       });
+    })
+  );
+});
+
+// Push notification listener for wedding countdown alerts
+self.addEventListener('push', (event) => {
+  let payload = {};
+  if (event.data) {
+    try {
+      payload = event.data.json();
+    } catch (e) {
+      payload = { body: event.data.text() };
+    }
+  }
+
+  const title = payload.title || (payload.notification && payload.notification.title) || '॥ શુભ લગ્ન વધામણાં ॥';
+  const body = payload.body || (payload.notification && payload.notification.body) || 'પાંચાણી પરિવાર લગ્ન ઉત્સવ';
+  const icon = payload.icon || (payload.notification && payload.notification.image) || 'icon-192.png';
+
+  const options = {
+    body: body,
+    icon: icon,
+    badge: 'favicon.svg',
+    vibrate: [200, 100, 200],
+    data: payload.data || { url: './index.html' },
+    requireInteraction: true
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if (client.url && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow('./index.html');
+      }
     })
   );
 });

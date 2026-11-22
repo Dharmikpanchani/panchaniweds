@@ -53,11 +53,11 @@
     }
 
     // All dials start together and the later ones simply run longer, which
-    // is how a real set of dials behaves.
-    roll('days', dayCells(), 2, 1600);
-    roll('hours', hourCells(), 2, 2100);
-    roll('minutes', minuteCells(), 2, 2600);
-    roll('seconds', secondCells(), 2, 3100);
+    // is how a real set of dials behaves. (Speed boosted by 10%)
+    roll('days', dayCells(), 2, 1440);
+    roll('hours', hourCells(), 2, 1890);
+    roll('minutes', minuteCells(), 2, 2340);
+    roll('seconds', secondCells(), 2, 2790);
 
     // The gold goes up the moment the last dial lands, and the plaques knock
     // just behind it - so they jump at the burst rather than having quietly
@@ -66,12 +66,12 @@
       confetti();
       flowerShower();
       knock();
-    }, 3100);
+    }, 2790);
 
     window.setTimeout(function () {
       finish();
       announce();
-    }, 3100 + 420);
+    }, 2790 + 380);
   }
 
   // ---- the confetti --------------------------------------------------------
@@ -356,7 +356,7 @@
       (scratchWrap || canvas.parentNode).appendChild(coin);
 
       var startTime = null;
-      var duration = 1800; // 1.8 seconds auto-scratch sweep
+      var duration = 1620; // 10% faster auto-scratch sweep
 
       function step(now) {
         if (scratchCleared) {

@@ -148,8 +148,7 @@ window.BalconyMusic = (function () {
             disarmUnlock();
             hideMusicPill();
           }
-        }).catch(function (err) {
-          console.warn('[Music] Unmuted autoplay blocked by browser policy without gesture, playing muted until interaction:', err);
+        }).catch(function () {
           // If unmuted autoplay is blocked by browser policy, play muted so audio buffer is ready
           audio.muted = true;
           var pMuted = audio.play();
@@ -204,9 +203,7 @@ window.BalconyMusic = (function () {
             disarmUnlock();
             hideMusicPill();
           }
-        }).catch(function (err) {
-          console.warn('[Music] unlock attempt:', err);
-        });
+        }).catch(function () {});
       } else {
         reflect();
         if (!audio.muted && !audio.paused) {
@@ -280,9 +277,7 @@ window.BalconyMusic = (function () {
             reflect();
             disarmUnlock();
             hideMusicPill();
-          }).catch(function (err) {
-            console.warn('[Music] button click error:', err);
-          });
+          }).catch(function () {});
         }
       } else {
         wantsSound = false;

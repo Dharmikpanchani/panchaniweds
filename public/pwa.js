@@ -9,14 +9,12 @@
       navigator.serviceWorker.getRegistrations().then(function (registrations) {
         for (var i = 0; i < registrations.length; i++) {
           registrations[i].unregister();
-          console.log('[PWA Dev] Unregistered service worker:', registrations[i]);
         }
       });
       if ('caches' in window) {
         caches.keys().then(function (names) {
           names.forEach(function (name) {
             caches.delete(name);
-            console.log('[PWA Dev] Cleared cache:', name);
           });
         });
       }
@@ -25,18 +23,14 @@
         navigator.serviceWorker
           .register('./sw.js')
           .then(function (reg) {
-            console.log('[PWA] Service Worker registered with scope:', reg.scope);
             reg.update();
           })
-          .catch(function (err) {
-            console.warn('[PWA] Service Worker registration failed:', err);
-          });
+          .catch(function () {});
       });
       if ('caches' in window) {
         caches.keys().then(function (names) {
           names.forEach(function (name) {
-            if (name !== 'panchani-wedding-v22') {
-              console.log('[PWA] Purging outdated cache:', name);
+            if (name !== 'panchani-wedding-v40') {
               caches.delete(name);
             }
           });
@@ -51,7 +45,6 @@
     window.navigator.standalone === true;
 
   if (isStandalone) {
-    console.log('[PWA] App is running in standalone mode.');
     return;
   }
 
@@ -99,8 +92,7 @@
       installBtn.addEventListener('click', function () {
         if (deferredPrompt) {
           deferredPrompt.prompt();
-          deferredPrompt.userChoice.then(function (choice) {
-            console.log('[PWA] User choice:', choice.outcome);
+          deferredPrompt.userChoice.then(function () {
             deferredPrompt = null;
             banner.classList.remove('is-visible');
             setTimeout(function () { banner.remove(); }, 400);
@@ -143,7 +135,6 @@
 
   // Hide banner if app is installed
   window.addEventListener('appinstalled', function () {
-    console.log('[PWA] Wedding invitation app successfully installed!');
     var banner = document.getElementById('pwaInstallBanner');
     if (banner) {
       banner.classList.remove('is-visible');

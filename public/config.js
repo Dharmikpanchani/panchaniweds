@@ -189,7 +189,7 @@
    * their own three are what load.
    */
   const GALLERY_STARTERS = [
-    { type: 'portrait', image: 'gallery/photo1.webp', placeholder: false, caption: '#શુભારંભ', hang: 118 },
+    { type: 'portrait', image: 'gallery/photo1.jpeg', placeholder: false, caption: '#શુભારંભ', hang: 118 },
     { type: 'landscape', image: 'gallery/photo2.webp', placeholder: false, caption: '#મીઠીયાદો', hang: 150 },
     { type: 'story', text: 'કેટલીક વાર્તાઓ ભવ્ય શરૂઆતથી શરૂ થાય છે, પણ અમારી પ્રેમ કહાની એક સહજ અને મીઠી વાતચીતથી શરૂ થઈ હતી.', hang: 86 },
     { type: 'portrait', image: 'gallery/photo3.webp', placeholder: false, caption: '#પ્રેમસફર', hang: 132 },
@@ -209,7 +209,7 @@
       symbol: 'ganesha',
       religion: 'hindu',
       script: 'custom',
-      custom: '॥ શ્રી ગણેશાય નમઃ ॥\nકુળદેવી શ્રી ખોડિયાર માતાજી તથા શ્રી નાગજી બાપાની અસીમ કૃપાથી'
+      custom: '॥ શ્રી ગણેશાય નમઃ ॥\nકુળદેવી શ્રી મોમાઈ માતાજીની અસીમ કૃપાથી'
     },
 
     brideName: 'ચિ. નિશા',
@@ -219,7 +219,7 @@
     hostNames: ['ચિ. ધાર્મિક', 'ચિ. નિશા'],
 
     // The gate's card, under the invocation.
-    introNote: 'સમર્પણના ઉપવનમાં, વડીલોના અને વાત્સલ્યના સાનિધ્યમાં, કુળદેવી શ્રી ખોડિયાર માતાજી તથા શ્રી નાગજી બાપાની અસીમ કૃપાથી રસનાળ નિવાસી અ.સૌ. લલિતાબેન તથા શ્રી મુકેશભાઈ જેરામભાઈ પાંચાણીના સુપુત્ર ચિ. ધાર્મિક ના શુભ લગ્ન શેડુભાર નિવાસી અ.સૌ. મનીષાબેન તથા શ્રી પ્રવિણભાઈ કડવાભાઈ બાબરીયા ની સુપુત્રી ચિ. નિશા સાથે સંવત ૨૦૮૩ ના પોષ વદ ૮ ને શુક્રવાર તા. ૨૯/૦૧/૨૦૨૭ ના શુભ દિને નિર્ધાર્યા છે. ત્યારે લગ્ન ની વૈદિક પરંપરા ના ઉત્સવમાં અમારૂ ભાવભર્યું આમંત્રણ સ્વીકારી જીવન ના અનેરા મુકામ પર આપ જરૂરથી પધારી શોભામાં અભિવૃદ્ધિ કરશોજી.',
+    introNote: 'સમર્પણના ઉપવનમાં, વડીલોના અને વાત્સલ્યના સાનિધ્યમાં, કુળદેવી શ્રી મોમાઈ માતાજીની અસીમ કૃપાથી...\n\nરસનાળ નિવાસી\nશ્રી મુકેશભાઈ જેરામભાઈ પાંચાણી\nતથા\nઅ.સૌ. લલિતાબેન મુકેશભાઈ પાંચાણી\nના સુપુત્ર\nચિ. ધાર્મિક\nના શુભ લગ્ન\n\nશેડુભાર નિવાસી\nશ્રી પ્રવિણભાઈ કડવાભાઈ બાબરીયા\nતથા\nઅ.સૌ. મનીષાબેન પ્રવિણભાઈ બાબરીયા\nની સુપુત્રી\nચિ. નિશા\n\nસાથે સંવત ૨૦૮૩ ના પોષ વદ ૮ ને શુક્રવાર, તા. ૨૯/૦૧/૨૦૨૭ ના શુભ દિને નિર્ધાર્યા છે.\n\nત્યારે લગ્ન ની વૈદિક પરંપરા ના ઉત્સવમાં અમારૂ ભાવભર્યું આમંત્રણ સ્વીકારી જીવન ના અનેરા મુકામ પર આપ જરૂરથી પધારી શોભામાં અભિવૃદ્ધિ કરશોજી.',
 
     shloka: 'રિદ્ધિ સિદ્ધિ સહિત પધારજો, ગૌરી નંદન ગણેશ,\nસહ કુટુંબ સહિત પધારજો, શ્રી બ્રહ્મા, વિષ્ણુ, મહેશ...',
 
@@ -276,11 +276,11 @@
     // template folder; the dates are absolute (the editor re-spaces them when
     // the wedding date moves).
     ceremonies: [
-      { name: 'મીંઢળ', art: 'media/haldi.webp', date: '2027-01-27', time: '21:00', timeLabel: 'રાત્રે ૦૯:૦૦ કલાકે', tithi: 'પોષ વદ ૬ ને બુધવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન, રસનાળ', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Rasnal', enabled: true },
-      { name: 'મંડપ મુહૂર્ત', art: 'media/ring_ceremony.webp', date: '2027-01-28', time: '07:00', timeLabel: 'સવારે ૦૭:૦૦ કલાકે', tithi: 'પોષ વદ ૭ ને ગુરૂવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન, રસનાળ', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Rasnal', enabled: true },
-      { name: 'સ્વરૂચિ ભોજન', art: 'media/reception.webp', date: '2027-01-28', time: '11:00', timeLabel: 'બપોરે ૧૧:૦૦ કલાકે', tithi: 'પોષ વદ ૭ ને ગુરૂવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન, રસનાળ', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Rasnal', enabled: true },
-      { name: 'દાંડીયા રાસ', art: 'media/sangeet.webp', date: '2027-01-28', time: '21:00', timeLabel: 'રાત્રે ૦૯:૦૦ કલાકે', tithi: 'પોષ વદ ૭ ને ગુરૂવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન, રસનાળ', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Rasnal', enabled: true },
-      { name: 'જાન પ્રસ્થાન', art: 'media/ceremony_ring.webp', date: '2027-01-29', time: '08:00', timeLabel: 'સવારે શેડુભાર મુકામે પ્રસ્થાન કરશે', tithi: 'પોષ વદ ૮ ને શુક્રવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન થી શેડુભાર', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Shedubhar', enabled: true },
+      { name: 'મીંઢળ', art: 'media/haldi.webp', date: '2027-01-27', time: '21:00', timeLabel: 'રાત્રે ૦૯:૦૦ કલાકે', tithi: 'પોષ વદ ૬ ને બુધવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન, રસનાળ', mapUrl: 'https://www.google.com/maps/search/?api=1&query=21.828735,71.482394', enabled: true },
+      { name: 'મંડપ મુહૂર્ત', art: 'media/ring_ceremony.webp', date: '2027-01-28', time: '07:00', timeLabel: 'સવારે ૦૭:૦૦ કલાકે', tithi: 'પોષ વદ ૭ ને ગુરૂવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન, રસનાળ', mapUrl: 'https://www.google.com/maps/search/?api=1&query=21.828735,71.482394', enabled: true },
+      { name: 'સ્વરૂચિ ભોજન', art: 'media/reception.webp', date: '2027-01-28', time: '11:00', timeLabel: 'બપોરે ૧૧:૦૦ કલાકે', tithi: 'પોષ વદ ૭ ને ગુરૂવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન, રસનાળ', mapUrl: 'https://www.google.com/maps/search/?api=1&query=21.828735,71.482394', enabled: true },
+      { name: 'દાંડીયા રાસ', art: 'media/sangeet.webp', date: '2027-01-28', time: '21:00', timeLabel: 'રાત્રે ૦૯:૦૦ કલાકે', tithi: 'પોષ વદ ૭ ને ગુરૂવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન, રસનાળ', mapUrl: 'https://www.google.com/maps/search/?api=1&query=21.828735,71.482394', enabled: true },
+      { name: 'જાન પ્રસ્થાન', art: 'media/ceremony_ring.webp', date: '2027-01-29', time: '08:00', timeLabel: 'સવારે શેડુભાર મુકામે પ્રસ્થાન કરશે', tithi: 'પોષ વદ ૮ ને શુક્રવાર', venue: 'સ્થળ: અમારું નિવાસ સ્થાન થી શેડુભાર', mapUrl: 'https://www.google.com/maps/search/?api=1&query=21.828735,71.482394', enabled: true },
       { name: 'શુભ લગ્ન વિધિ (હસ્તમેળાપ)', art: 'media/vivaah.webp', date: '2027-01-29', time: '12:05', timeLabel: 'બપોરે ૧૨:૦૫ કલાકે', tithi: 'પોષ વદ ૮ ને શુક્રવાર', venue: 'લગ્ન સ્થળ: શેડુભાર', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Shedubhar', enabled: true },
     ],
 
@@ -397,9 +397,10 @@
       avsarLead: 'અવસરનું આંગણું',
       nimantrakLead: ':: નિમંત્રક ::',
       nimantrakHost: 'શ્રી મુકેશભાઈ જેરામભાઈ પાંચાણી',
-      nimantrakCo: 'C/o. શ્રી મગનભાઈ જેરામભાઈ પાંચાણી',
+      nimantrakCo: '',
       nimantrakAddress: 'મુ. રસનાળ, વાયા ઢસા, તા. ગઢડા (સ્વા.), જી. બોટાદ.',
-      nimantrakPhones: ['૯૯૭૯૨ ૨૭૫૪૦', '૮૭૮૦૦ ૨૧૦૧૬'],
+      nimantrakMapUrl: 'https://www.google.com/maps/search/?api=1&query=21.828735,71.482394',
+      nimantrakPhones: ['૯૯૭૮૨ ૨૭૫૪૦', '૯૪૨૭૩ ૫૨૭૯૧'],
       shubhLagnaSthalLead: '॥ શુભ લગ્ન સ્થળ ॥',
       shubhLagnaSthalHost: 'શ્રી પ્રવિણભાઈ કડવાભાઈ બાબરીયા',
       shubhLagnaSthal: 'મુ. શેડુભાર',
@@ -564,6 +565,9 @@
     const own = ((c && c.mapUrl) || '').trim();
     if (own) return own;
     const venue = ((c && c.venue) || '').trim();
+    if (venue.indexOf('રસનાળ') !== -1 || venue.indexOf('Rasnal') !== -1 || venue.indexOf('નિવાસ સ્થાન') !== -1) {
+      return 'https://www.google.com/maps/search/?api=1&query=21.828735,71.482394';
+    }
     return venue ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(venue) : '';
   }
 
