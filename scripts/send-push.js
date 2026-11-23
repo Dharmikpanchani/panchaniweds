@@ -205,7 +205,7 @@ async function main() {
           title: title,
           body: bodyText,
           icon: 'https://dharmikpanchani.github.io/panchaniweds/icon-192.png',
-          badge: 'https://dharmikpanchani.github.io/panchaniweds/favicon.svg',
+          badge: 'https://dharmikpanchani.github.io/panchaniweds/badge-96.png',
           vibrate: [200, 100, 200],
           requireInteraction: true
         },

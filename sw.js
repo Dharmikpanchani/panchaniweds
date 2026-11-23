@@ -1,10 +1,11 @@
 // Service Worker for Panchani Royal Wedding PWA
-const CACHE_NAME = 'panchani-wedding-v50';
+const CACHE_NAME = 'panchani-wedding-v51';
 const PRECACHE_ASSETS = [
   './',
   './index.html',
   './styles.css',
   './favicon.svg',
+  './badge-96.png',
   './icon-192.png',
   './icon-512.png',
   './apple-touch-icon.png',
@@ -153,7 +154,7 @@ self.addEventListener('push', (event) => {
   const options = {
     body: body,
     icon: icon,
-    badge: 'favicon.svg',
+    badge: 'badge-96.png',
     vibrate: [200, 100, 200],
     data: data.url ? { url: data.url } : (payload.data || { url: './index.html' }),
     requireInteraction: true

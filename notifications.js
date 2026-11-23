@@ -46,7 +46,7 @@
       reg.showNotification(title, {
         body: body,
         icon: 'icon-192.png',
-        badge: 'favicon.svg',
+        badge: 'badge-96.png',
         vibrate: [200, 100, 200],
         tag: isTest ? 'wedding-test-' + Date.now() : 'wedding-countdown-' + days,
         renotify: true,
