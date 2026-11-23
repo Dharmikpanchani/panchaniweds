@@ -41,10 +41,14 @@ function initFirebase() {
   // Check Environment Variable (for GitHub Actions / Vercel Secrets)
   if (process.env.FIREBASE_SERVICE_ACCOUNT) {
     try {
-      const raw = process.env.FIREBASE_SERVICE_ACCOUNT.trim();
+      let raw = process.env.FIREBASE_SERVICE_ACCOUNT.trim();
+      if (raw.startsWith("'") && raw.endsWith("'")) {
+        raw = raw.slice(1, -1).trim();
+      }
       const jsonStr = raw.startsWith('{') ? raw : Buffer.from(raw, 'base64').toString('utf8');
-      credential = cert(JSON.parse(jsonStr));
-      console.log('🔑 Authenticated using FIREBASE_SERVICE_ACCOUNT environment variable.');
+      const parsed = JSON.parse(jsonStr);
+      credential = cert(parsed);
+      console.log('🔑 Authenticated using FIREBASE_SERVICE_ACCOUNT environment variable for project:', parsed.project_id);
     } catch (err) {
       console.error('❌ Failed to parse FIREBASE_SERVICE_ACCOUNT env variable:', err.message);
     }
