@@ -200,13 +200,34 @@ async function main() {
         daysLeft: String(daysLeft),
         url: 'https://dharmikpanchani.github.io/panchaniweds/'
       },
+      android: {
+        priority: 'high',
+        ttl: 86400000,
+        notification: {
+          title: title,
+          body: bodyText,
+          icon: 'icon-192.png',
+          color: '#4a021e',
+          sound: 'default',
+          priority: 'max',
+          defaultSound: true,
+          defaultVibrateTimings: true,
+          visibility: 'public'
+        }
+      },
       webpush: {
+        headers: {
+          Urgency: 'high',
+          TTL: '86400'
+        },
         notification: {
           title: title,
           body: bodyText,
           icon: 'https://dharmikpanchani.github.io/panchaniweds/icon-192.png',
           badge: 'https://dharmikpanchani.github.io/panchaniweds/badge-96.png',
           vibrate: [200, 100, 200],
+          tag: 'wedding-countdown',
+          renotify: true,
           requireInteraction: true
         },
         fcmOptions: {
