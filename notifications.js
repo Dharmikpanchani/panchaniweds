@@ -67,14 +67,15 @@
     });
   }
 
-  // Register device FCM token with backend API
+  // Register device FCM token with backend API and Firebase Firestore
   function registerFcmToken() {
     if (!('serviceWorker' in navigator) || !('Notification' in window)) return;
     if (Notification.permission !== 'granted') return;
 
     Promise.all([
       loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'),
-      loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js')
+      loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js'),
+      loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js')
     ])
       .then(function () {
         if (!window.firebase) return;
@@ -92,7 +93,38 @@
       })
       .then(function (token) {
         if (!token) return;
-        // Save to backend
+
+        // Save locally for quick access
+        try {
+          localStorage.setItem('fcm_device_token', token);
+        } catch (_) {}
+
+        console.log('[FCM] Device Token:', token);
+
+        // 1. Sync to Firebase Firestore (collection: fcm_tokens)
+        if (window.firebase && window.firebase.firestore) {
+          try {
+            const db = window.firebase.firestore();
+            // Create a safe document ID from token prefix
+            const docId = btoa(token.slice(0, 32)).replace(/[/+=]/g, '_');
+            db.collection('fcm_tokens').doc(docId).set({
+              token: token,
+              userAgent: navigator.userAgent || 'Unknown',
+              platform: navigator.platform || 'Unknown',
+              updatedAt: window.firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true })
+              .then(function () {
+                console.log('[FCM] Token synced to Firestore collection "fcm_tokens"');
+              })
+              .catch(function (err) {
+                console.warn('[FCM] Firestore sync note:', err.message);
+              });
+          } catch (e) {
+            console.warn('[FCM] Firestore init note:', e);
+          }
+        }
+
+        // 2. Fallback to API route (if running in local or Node server environment)
         fetch('api/fcm-token', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -186,6 +218,13 @@
     setTimeout(checkDailyNotification, 1000);
   }
 
+  // Also check immediately when user switches back to this app (without needing refresh)
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') {
+      checkDailyNotification();
+    }
+  });
+
   // Expose global helper for testing
   window.testWeddingNotification = function () {
     if (!('Notification' in window)) {
@@ -201,6 +240,22 @@
         alert('કૃપા કરીને બ્રાઉઝર સેટિંગ્સમાંથી Notification Allow કરો.');
       }
     });
+  };
+
+  // Helper to copy device token for manual push testing
+  window.copyMyFcmToken = function () {
+    const token = localStorage.getItem('fcm_device_token');
+    if (!token) {
+      alert('FCM Token હજી મળ્યો નથી. કૃપા કરીને નોટિફિકેશન Allow કરો.');
+      return;
+    }
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(token).then(function () {
+        alert('FCM Token ક્લિપબોર્ડમાં કોપી થઈ ગયો છે:\n' + token);
+      });
+    } else {
+      prompt('તમારો FCM Token (કોપી કરી લો):', token);
+    }
   };
 
 })();

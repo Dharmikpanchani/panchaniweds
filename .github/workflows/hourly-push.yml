@@ -1,0 +1,31 @@
+name: Hourly Wedding Countdown Push Notification
+
+on:
+  schedule:
+    # Runs every 1 hour for testing (at minute 0)
+    - cron: '0 * * * *'
+  workflow_dispatch: # Allows manual 1-click trigger from GitHub Actions UI anytime!
+
+concurrency:
+  group: 'push-notifications'
+  cancel-in-progress: false
+
+jobs:
+  dispatch-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Firebase Admin
+        run: npm install firebase-admin
+
+      - name: Send Wedding Countdown Push Notification
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: node scripts/send-push.js
