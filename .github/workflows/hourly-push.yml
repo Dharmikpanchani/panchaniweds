@@ -23,7 +23,7 @@ jobs:
           node-version: 18
 
       - name: Install Firebase Admin
-        run: npm install firebase-admin
+        run: npm install firebase-admin --legacy-peer-deps --no-audit --no-fund
 
       - name: Send Wedding Countdown Push Notification
         env:
