@@ -218,7 +218,8 @@ async function main() {
       webpush: {
         headers: {
           Urgency: 'high',
-          TTL: '86400'
+          TTL: '86400',
+          Topic: 'wedding-countdown'
         },
         notification: {
           title: title,
@@ -248,6 +249,12 @@ async function main() {
           const errorCode = resp.error?.code;
           const errorMsg = resp.error?.message;
           console.warn(`⚠️ Token ${token.slice(0, 16)}... failed: [${errorCode}] ${errorMsg}`);
+          if (
+            errorCode === 'messaging/registration-token-not-registered' ||
+            errorCode === 'messaging/invalid-registration-token'
+          ) {
+            invalidTokens.push(token);
+          }
         } else {
           console.log(`✅ Token ${token.slice(0, 16)}... delivered successfully! MessageId: ${resp.messageId}`);
         }
@@ -255,6 +262,22 @@ async function main() {
     } catch (err) {
       console.error('❌ Batch send failed:', err.message);
       totalFailure += batch.length;
+    }
+  }
+
+  // Cleanup unregistered tokens from Firestore
+  if (invalidTokens.length > 0) {
+    try {
+      const db = getFirestore(app);
+      for (const tok of invalidTokens) {
+        const docId = tokenDocMap.get(tok);
+        if (docId) {
+          await db.collection('fcm_tokens').doc(docId).delete();
+          console.log(`🗑️ Removed invalid token doc ${docId} from Firestore.`);
+        }
+      }
+    } catch (cleanupErr) {
+      console.warn('⚠️ Token cleanup note:', cleanupErr.message);
     }
   }
 

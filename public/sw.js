@@ -1,10 +1,11 @@
 // Service Worker for Panchani Royal Wedding PWA
-const CACHE_NAME = 'panchani-wedding-v49';
+const CACHE_NAME = 'panchani-wedding-v54';
 const PRECACHE_ASSETS = [
   './',
   './index.html',
   './styles.css',
   './favicon.svg',
+  './badge-96.png',
   './icon-192.png',
   './icon-512.png',
   './apple-touch-icon.png',
@@ -144,16 +145,20 @@ self.addEventListener('push', (event) => {
     }
   }
 
-  const title = payload.title || (payload.notification && payload.notification.title) || '॥ શુભ લગ્ન વધામણાં ॥';
-  const body = payload.body || (payload.notification && payload.notification.body) || 'પાંચાણી પરિવાર લગ્ન ઉત્સવ';
-  const icon = payload.icon || (payload.notification && payload.notification.image) || 'icon-192.png';
+  const notif = payload.notification || {};
+  const data = payload.data || {};
+  const title = notif.title || data.title || payload.title || '॥ શુભ લગ્ન વધામણાં ॥';
+  const body = notif.body || data.body || payload.body || 'પાંચાણી પરિવાર શુભ વિવાહ ઉત્સવ';
+  const icon = notif.icon || notif.image || data.icon || payload.icon || 'icon-192.png';
 
   const options = {
     body: body,
     icon: icon,
-    badge: 'favicon.svg',
+    badge: 'badge-96.png',
     vibrate: [200, 100, 200],
-    data: payload.data || { url: './index.html' },
+    tag: payload.tag || 'wedding-countdown',
+    renotify: true,
+    data: data.url ? { url: data.url } : (payload.data || { url: './index.html' }),
     requireInteraction: true
   };
 

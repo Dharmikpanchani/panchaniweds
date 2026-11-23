@@ -17,15 +17,17 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
   const title = payload.notification?.title || payload.data?.title || '॥ શુભ લગ્ન વધામણાં ॥';
   const body = payload.notification?.body || payload.data?.body || 'પાંચાણી પરિવાર શુભ વિવાહ ઉત્સવ';
-  const icon = payload.notification?.image || payload.data?.icon || 'icon-192.png';
+  const icon = payload.notification?.image || payload.data?.icon || 'https://dharmikpanchani.github.io/panchaniweds/icon-192.png';
 
   const notificationOptions = {
     body: body,
     icon: icon,
-    badge: 'favicon.svg',
+    badge: 'https://dharmikpanchani.github.io/panchaniweds/badge-96.png',
     image: payload.notification?.image,
     data: payload.data || { url: './index.html' },
     vibrate: [200, 100, 200],
+    tag: payload.tag || 'wedding-countdown',
+    renotify: true,
     requireInteraction: true,
   };
 

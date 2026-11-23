@@ -1,5 +1,5 @@
 // Service Worker for Panchani Royal Wedding PWA
-const CACHE_NAME = 'panchani-wedding-v53';
+const CACHE_NAME = 'panchani-wedding-v54';
 const PRECACHE_ASSETS = [
   './',
   './index.html',
