@@ -218,15 +218,13 @@ async function main() {
       totalFailure += response.failureCount;
 
       response.responses.forEach((resp, idx) => {
+        const token = batch[idx];
         if (!resp.success) {
           const errorCode = resp.error?.code;
-          const token = batch[idx];
-          if (
-            errorCode === 'messaging/registration-token-not-registered' ||
-            errorCode === 'messaging/invalid-registration-token'
-          ) {
-            invalidTokens.push(token);
-          }
+          const errorMsg = resp.error?.message;
+          console.warn(`⚠️ Token ${token.slice(0, 16)}... failed: [${errorCode}] ${errorMsg}`);
+        } else {
+          console.log(`✅ Token ${token.slice(0, 16)}... delivered successfully! MessageId: ${resp.messageId}`);
         }
       });
     } catch (err) {
@@ -237,29 +235,6 @@ async function main() {
 
   console.log('----------------------------------------------------');
   console.log(`✨ Results: ✅ ${totalSuccess} sent successfully | ❌ ${totalFailure} failed`);
-
-  // Cleanup invalid tokens from Firestore
-  if (invalidTokens.length > 0 && tokenDocMap.size > 0) {
-    try {
-      const db = getFirestore(app);
-      const batch = db.batch();
-      let deleteCount = 0;
-
-      invalidTokens.forEach((token) => {
-        const docId = tokenDocMap.get(token);
-        if (docId) {
-          batch.delete(db.collection('fcm_tokens').doc(docId));
-          deleteCount++;
-        }
-      });
-
-      if (deleteCount > 0) {
-        await batch.commit();
-        console.log(`🧹 Cleaned up ${deleteCount} expired device token(s) from Firestore.`);
-      }
-    } catch (_) {}
-  }
-
   console.log('====================================================\n');
 }
 
