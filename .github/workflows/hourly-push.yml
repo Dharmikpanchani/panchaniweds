@@ -25,7 +25,15 @@ jobs:
       - name: Install Firebase Admin
         run: npm install firebase-admin --legacy-peer-deps --no-audit --no-fund
 
-      - name: Send Wedding Countdown Push Notification
+      - name: Send Wedding Countdown Push Notification Every 1 Minute
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: node scripts/send-push.js
+        run: |
+          for i in $(seq 1 15); do
+            echo "🔔 Minute $i: Sending push notification..."
+            node scripts/send-push.js
+            if [ $i -lt 15 ]; then
+              echo "⏳ Waiting 60 seconds for the next 1-minute notification..."
+              sleep 60
+            fi
+          done
