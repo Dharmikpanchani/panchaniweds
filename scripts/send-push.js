@@ -1,9 +1,9 @@
 /**
- * Hourly Wedding Countdown Push Notification Dispatcher
+ * Daily Wedding Countdown Push Notification Dispatcher
  * Project: Panchani Royal Wedding (Dharmik & Nisha)
  *
  * Can be run:
- * 1. Automatically via GitHub Actions every 1 hour (cron: '0 * * * *')
+ * 1. Automatically via GitHub Actions daily at 07:00 AM IST (cron: '30 1 * * *')
  * 2. Manually via GitHub Actions UI (workflow_dispatch)
  * 3. Locally: node scripts/send-push.js
  * 4. Test specific token: node scripts/send-push.js --token <FCM_TOKEN>
