@@ -1,9 +1,9 @@
-name: Hourly Wedding Countdown Push Notification
+name: 5-Minute Wedding Countdown Push Notification
 
 on:
   schedule:
-    # Runs every 1 hour for testing (at minute 0)
-    - cron: '0 * * * *'
+    # Runs every 5 minutes for sharp testing
+    - cron: '*/5 * * * *'
   workflow_dispatch: # Allows manual 1-click trigger from GitHub Actions UI anytime!
 
 concurrency:

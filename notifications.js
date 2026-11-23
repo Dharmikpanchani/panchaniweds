@@ -175,7 +175,6 @@
           if (perm === 'granted') {
             banner.classList.remove('is-visible');
             setTimeout(function () { banner.remove(); }, 400);
-            triggerLocalNotification(daysLeft, true);
             registerFcmToken();
           }
         });
@@ -192,14 +191,14 @@
     }
   }
 
-  // Daily check
+  // Check and register device in background
   function checkDailyNotification() {
     const daysLeft = getDaysLeft();
     if (daysLeft > NOTIFICATION_THRESHOLD_DAYS) return;
 
     if (Notification.permission === 'granted') {
-      // For testing: trigger notification so user gets instant confirmation
-      triggerLocalNotification(daysLeft, false);
+      // Do NOT trigger notification on open/refresh.
+      // Notifications will only arrive automatically from server schedule.
       registerFcmToken();
     } else {
       createNotificationBanner();
