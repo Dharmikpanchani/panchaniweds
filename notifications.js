@@ -134,7 +134,9 @@
           })
         }).catch(function () {});
       })
-      .catch(function () {});
+      .catch(function (err) {
+        console.error('[FCM] Token generation error:', err);
+      });
   }
 
   // Create UI prompt banner if user hasn't enabled notifications yet
@@ -196,18 +198,11 @@
     if (daysLeft > NOTIFICATION_THRESHOLD_DAYS) return;
 
     if (Notification.permission === 'granted') {
-      const todayStr = new Date().toISOString().slice(0, 10);
-      const lastNotifyDate = localStorage.getItem('last_wedding_notify_date');
-
-      if (lastNotifyDate !== todayStr) {
-        triggerLocalNotification(daysLeft, false);
-        localStorage.setItem('last_wedding_notify_date', todayStr);
-      }
+      // For testing: trigger notification so user gets instant confirmation
+      triggerLocalNotification(daysLeft, false);
       registerFcmToken();
     } else {
-      if (!sessionStorage.getItem('ry_notif_dismissed')) {
-        createNotificationBanner();
-      }
+      createNotificationBanner();
     }
   }
 
